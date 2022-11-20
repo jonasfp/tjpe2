@@ -1,0 +1,29 @@
+
+.only-print{
+
+	display: none;
+}
+
+@media print{
+
+	.no-print{
+
+		display: none !important;
+
+	}
+	.only-print{
+
+		display: block;
+	}
+
+	.fonte-print{
+
+		font-size: 12px;
+	}
+
+	.margin-print{
+
+		margin-right: 0px !important;
+	}
+
+}
