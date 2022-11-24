@@ -141,7 +141,7 @@
                         </a>
                     </li>
                     <li class="treeview">
-                        <a href="index.php?pag=lista_usuario">
+                       <a href="index.php?pag=lista_usuario">
                             <i class="fa fa-users"></i>
                             <span>Servidores</span>                        
                         </a>

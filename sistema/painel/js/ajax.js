@@ -6,7 +6,7 @@ $(document).ready(function(){
 function listar(){
 	$.ajax({
 		//url:'paginas/'+ pag + '/calculos.php',        
-        url:'paginas/'+ pag + '/listar.php',
+        url:'paginas/'+ pag2 + '/listar.php',
 		method:'POST',
 		data:$('#form').serialize(),
 		dataType:"html",

@@ -4,7 +4,7 @@
 require_once('verificar.php');
 require_once('../conexao.php');
 
-$pag = 'danos_materiais_morais';
+$pag = 'modulo_custas';
 
 ?>
 
@@ -22,7 +22,7 @@ $pag = 'danos_materiais_morais';
 <h4 style="text-align:center">CONTADORIA</h4>
 <h5 style="text-align:center; margin-bottom: 3.0em;">FORUM DES. RODOLFO AURELIANO - AV. DES. GUERRA BARRETO, S/N - ILHA DO LEITE - RECIFE /PE</h5>                
 
-<form method="post" id="formCustas">
+<form method="post" id="formCustasProcesso" name="formCustasProcesso">
 
     <table class="table table-hover">
         <thead>
@@ -37,13 +37,13 @@ $pag = 'danos_materiais_morais';
         <tr>
             <td>       
 
-                <input type="text" class="form-control" id="processocustas" name="processocustas" placeholder="Número do processo">             
+                <input type="text" class="form-control" id="processo" name="processo" placeholder="Número do processo">             
             </td>
 
             <td>
 
                 <div class="form-group">
-                    <select class="form-control sel2" id="varacustas" name="varacustas" style="width:100%;" > 
+                    <select class="form-control sel2" id="vara" name="vara" style="width:100%;" > 
 
                         <?php 
                         $query = $pdo->query("SELECT * FROM vara ORDER BY id asc");
@@ -68,11 +68,11 @@ $pag = 'danos_materiais_morais';
 
             <td>
 
-                <input type="text" class="form-control" id="devedorcustas" name="devedorcustas" placeholder="Devedor">             
+                <input type="text" class="form-control" id="devedores" name="devedores" placeholder="Devedor">             
             </td>
 
             <td>               
-                <button type="submit" id="salvarLinhaProcessoCustas" name="salvarLinhaProcessoCustas" class="salvarLinhaProcessoCustas"><i class="fa fa-save" title="Salvar linha"></i></button>
+                <button type="submit" id="salvarLinhaprocesso" name="salvarLinhaprocesso" class="salvarLinhaprocesso"><i class="fa fa-save" title="Salvar linha"></i></button>
                 
 
             </td>
@@ -102,7 +102,7 @@ $pag = 'danos_materiais_morais';
     <tr>
         <td>
          <div class="form-group">
-            <select class="form-control sel2" id="selectindicecorrecaocustas" name="selectindicecorrecaocustas" style="width:100%;" > 
+            <select class="form-control sel2" id="selectindicecorrecao" name="selectindicecorrecao" style="width:100%;" > 
 
                 <?php 
                 $query = $pdo->query("SELECT * FROM indices_correcao ORDER BY id asc");
@@ -125,7 +125,7 @@ $pag = 'danos_materiais_morais';
 
     <td>
         <div>
-            <input placeholder="Data final" type="text" id="datafinalcorrecaocustas" name="datafinalcorrecaocustas" class="form-control"></div>   
+            <input placeholder="Data final" type="text" id="datafinalcorrecao" name="datafinalcorrecao" class="form-control"></div>   
 
         </td>
 
@@ -149,8 +149,8 @@ $pag = 'danos_materiais_morais';
     <table class="table table-hover" id="jonas">
         <thead>
             <tr>
-              <th class="text-left fonte-print" style="width:14%" >CUSTAS CALCULADAS/PAGAS</th>
-              <th class="text-left fonte-print" style="width:7%">DATA DO ATO</th>
+              <th class="text-left fonte-print" style="width:14%" >CALCULADAS/PAGAS</th>
+              <th class="text-left fonte-print" style="width:7%">DATA</th>
               <th class="text-left fonte-print">HISTÓRICO</th>  
               <th class="text-left fonte-print" style="width:10%">CUSTAS PROCESSUAIS</th>
               <th class="text-left fonte-print" style="width:10%">TAXA JUDICIÁRIA</th>
@@ -170,10 +170,10 @@ $pag = 'danos_materiais_morais';
 
                 <form>
                    <select id="selecttipocustas" name="selecttipocustas" class="form-control">
-                    <option value="semcustascalculadas">SEM CUSTAS</option>                               
-                    <option value="custassegundograu">CUSTAS DO 2º GRAU</option>
-                    <option value="contadoria">CONTADORIA</option>
-                    <option value="diversascustas">PAGAS</option>          
+                    <option value="Sem custas">SEM CUSTAS</option>                               
+                    <option value="2º grau">CUSTAS DO 2º GRAU</option>
+                    <option value="Contadoria">CONTADORIA</option>
+                    <option value="Diversas">PAGAS</option>          
                 </select>
 
             </form>
@@ -217,7 +217,7 @@ $pag = 'danos_materiais_morais';
         </td>
 
         <td>                
-            <button type="button" id="inserirLinhaCustasCalculadas" name="inserirLinhaCustasCalculadas"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
+            <button type="submit" id="inserirLinhaCustasCalculadas" name="inserirLinhaCustasCalculadas"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
 
         </td>            
 
@@ -234,8 +234,8 @@ $pag = 'danos_materiais_morais';
     <table class="table table-hover" id="jonas">
         <thead>
             <tr>
-              <th class="text-left fonte-print" style="width:14%">CUSTAS/TAXA</th>  
-              <th class="text-left fonte-print" style="width:7%">DATA DO ATO</th>
+              <th class="text-left fonte-print" style="width:14%">DEVIDAS</th>  
+              <th class="text-left fonte-print" style="width:7%">DATA</th>
               <th class="text-left fonte-print">HISTÓRICO</th>
               <th class="text-left fonte-print" style="width:10%">VALOR BASE (R$)</th>
               <th class="text-left fonte-print" style="width:10%">CUSTAS PROCESSUAIS</th>
@@ -257,12 +257,12 @@ $pag = 'danos_materiais_morais';
                 <form>
 
                    <select id="selectcustastaxa" name="selectcustastaxa" class="form-control">
-                    <option value="semcustastaxa">SEM CUSTAS</option>
-                    <option value="custasiniciaiscustastaxa">CUSTAS INICIAIS</option>
-                    <option value="custascumprimentocustastaxa">CUMPRIMENTO DE SENTENÇA</option>
-                    <option value="reconvencaocustastaxa">RECONVENÇÃO</option>
-                    <option value="denunciacaocustastaxa">DENUNCIAÇÃO DA LIDE</option>
-                    <option value="diversascustastaxa">DIVERSAS</option>                              
+                    <option value="Sem custas">SEM CUSTAS</option>
+                    <option value="Iniciais">CUSTAS INICIAIS</option>
+                    <option value="Cump. Sentença">CUMPRIMENTO DE SENTENÇA</option>
+                    <option value="Reconvenção">RECONVENÇÃO</option>
+                    <option value="Denunciação">DENUNCIAÇÃO DA LIDE</option>
+                    <option value="Diversas">DIVERSAS</option>                              
 
                 </select>
 
@@ -306,7 +306,7 @@ $pag = 'danos_materiais_morais';
 
         <td>
 
-            <button type="button" form="formCiveis" id="inserirLinhatotalcustastaxa" name="inserirLinhatotalcustastaxa"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
+            <button type="submit" id="inserirLinhatotalcustastaxa" name="inserirLinhatotalcustastaxa"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
 
         </td>            
 
@@ -318,13 +318,13 @@ $pag = 'danos_materiais_morais';
 
 <!--**************************Tabela Embargos*******************************-->
 
-<form method="post" id="formEmbargos" name="formEmbargos">
+<form method="post" id="formCustasEmbargos" name="formCustasEmbargos">
 
     <table class="table table-hover" id="jonas">
         <thead>
             <tr>
               <th class="text-left fonte-print" style="width:14%">EMBARGOS</th>  
-              <th class="text-left fonte-print" style="width:7%">DATA DO ATO</th>
+              <th class="text-left fonte-print" style="width:7%">DATA</th>
               <th class="text-left fonte-print">HISTÓRICO</th>
               <th class="text-left fonte-print" style="width:11%">VALOR DA EXECUÇÃO(R$)</th>
               <th class="text-left fonte-print" style="width:10%">PERCENTUAL(%) (R$)</th>
@@ -344,18 +344,14 @@ $pag = 'danos_materiais_morais';
 
             <td>
 
-                <form>
-
                    <select id="selecttipoembargos" name="selecttipoembargos" class="form-control">
-                    <option value="semcustastaxasembargos">SEM CUSTAS</option>                               
-                    <option value="custastaxaembargosdevedor">EMBARGOS DE DEVEDOR</option>
-                    <option value="custastaxaembargosterceiro">EMBARGOS DE TERCEIROS</option>
+                    <option value="Sem custas">SEM CUSTAS</option>                             
+                    <option value="Devedor">EMBARGOS DE DEVEDOR</option>
+                    <option value="Terceiros">EMBARGOS DE TERCEIROS</option>
 
                 </select>
 
-            </form>
-
-
+      
         </td>
 
 
@@ -376,19 +372,14 @@ $pag = 'danos_materiais_morais';
         </td>
 
         <td>
-
-            <form>
-
+         
                <select id="selectpercentualembargos" name="selectpercentualembargos" class="form-control">
 
-                   <option>Percentual(%)</option>                               
-                   <option value="custasiniciaisembargos">0,3%</option>
-                   <option value="custascomplementarembargos">0,7%</option>
-                   <option value="custastotaisembargos">1,0%</option>                            
-               </select>
-
-           </form>
-
+                   <option value="Sem custas">Percentual(%)</option>
+                   <option value="0,3">0,3%</option>
+                   <option value="0,7">0,7%</option>
+                   <option value="1,0">1,0%</option>                            
+                </select>
 
        </td>
 
@@ -411,7 +402,7 @@ $pag = 'danos_materiais_morais';
 
     <td>
 
-        <button type="button" form="formCiveis" id="inserirLinhatotalembargos" name="inserirLinhatotalembargos"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
+        <button type="submit" id="inserirLinhatotalembargos" name="inserirLinhatotalembargos"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
 
     </td>            
 
@@ -429,8 +420,8 @@ $pag = 'danos_materiais_morais';
     <table class="table table-hover" id="jonas">
         <thead>
             <tr>
-              <th class="text-left fonte-print" style="width:14%">CUSTAS EXTRAS/DESPESAS</th>  
-              <th class="text-left fonte-print" style="width:7%">DATA DO ATO</th>
+              <th class="text-left fonte-print" style="width:14%">EXTRAS/DESPESAS</th>  
+              <th class="text-left fonte-print" style="width:7%">DATA</th>
               <th class="text-left fonte-print">HISTÓRICO</th>
               <th class="text-left fonte-print" style="width:10%">QUANTIDADE</th>
               <th class="text-left fonte-print" style="width:10%">VALOR UNITÁRIO</th>                
@@ -448,26 +439,22 @@ $pag = 'danos_materiais_morais';
 
             <td>
 
-                <form>
-
                    <select id="selectcustasdespesasextras" name="selectcustasdespesasextras" class="form-control">
 
-                      <option value="semcustasextras">SEM CUSTAS/DESPESAS</option>
-                      <option value="certidaoextras">EXPEDIÇÃO DE CERTIDÃO</option>
-                      <option value="informacoesextras">OBTENÇÃO DE INFORMAÇÕES (SISBAJUD, RENAJUD...)</option>
-                      <option value="bloqueioextras">EXP. ALVARÁ, MANDADO E OFÍCIO (PARA BLOQUEIO)</option>
-                      <option value="publicacaoextras">PUBLICAÇÃO DE EDITAL</option>
-                      <option value="portesextras">PORTE DE REMESSA E DE RETORNO</option>
-                      <option value="citacoesintimacaoextras">CITAÇÕES E INTIMAÇÕES</option>
-                      <option value="cartaprecatoriaextras">CARTA PRECATORIA</option>
-                      <option value="cartarogatoriaextras">CARTA ROGATORIA</option>
-                      <option value="cartaordemextras">CARTA DE ORDEM</option>
+                      <option value="Sem custas">SEM CUSTAS/DESPESAS</option>
+                      <option value="Certidão">EXPEDIÇÃO DE CERTIDÃO</option>
+                      <option value="Informações">OBTENÇÃO DE INFORMAÇÕES (SISBAJUD, RENAJUD...)</option>
+                      <option value="Bloqueio">EXP. ALVARÁ, MANDADO E OFÍCIO (PARA BLOQUEIO)</option>
+                      <option value="Publicação">PUBLICAÇÃO DE EDITAL</option>
+                      <option value="Porte">PORTE DE REMESSA E DE RETORNO</option>
+                      <option value="Citação/Intimação">CITAÇÕES E INTIMAÇÕES</option>
+                      <option value="Carta precatória">CARTA PRECATORIA</option>
+                      <option value="Carta rogatória">CARTA ROGATORIA</option>
+                      <option value="Carta de ordem">CARTA DE ORDEM</option>
 
 
                   </select>
-
-              </form>
-
+             
 
           </td>
 
@@ -501,7 +488,7 @@ $pag = 'danos_materiais_morais';
 
         <td>
 
-            <button type="button" form="formCiveis" id="inserirLinhaExtras" name="inserirLinhaExtras"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
+            <button type="submit" id="inserirLinhaExtras" name="inserirLinhaExtras"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
 
         </td>            
 
@@ -520,14 +507,39 @@ $pag = 'danos_materiais_morais';
     <input id="exibir" class = "form-control" style="margin-bottom: 1.0em; margin-right:12.3em;color: red;font-weight: bold; width:14%">
 -->
 
+<!--
+
 <form class="form-inline">
-    <div class="form-group">
-      <label for="exibirtotaldevidocustas">VALOR TOTAL DEVIDO(R$):</label>
+
+<div class="form-group">
+      <label for="exibirtotaldevidocustas">CUSTAS PROCESSUAIS(R$):</label>
       <input type="text" style="color: red;font-weight: bold; font-size: 16px;" class="form-control" id="exibirtotaldevidocustas" name="exibirtotaldevidocustas" placeholder="" disabled>
+  </div> 
+
+
+  <div class="form-group">
+      <label for="exibirtotaldevidotaxa">TAXAS JUDICIARIAS(R$):</label>
+      <input type="text" style="color: red;font-weight: bold; font-size: 16px;" class="form-control" id="exibirtotaldevidotaxa" name="exibirtotaldevidotaxa" placeholder="" disabled>
+  </div>
+
+   <div class="form-group">
+      <label for="exibirtotaldevidodespesas">DESPESAS PROCESSUAIS(R$):</label>
+      <input type="text" style="color: red;font-weight: bold; font-size: 16px;" class="form-control" id="exibirtotaldevidodesepesas" name="exibirtotaldevidodespesas" placeholder="" disabled>
+  </div>  
+
+
+
+    <div class="form-group">
+      <label for="exibirtotaldevidocustastaxas">TOTAL DEVIDO(R$):</label>
+      <input type="text" style="color: red;font-weight: bold; font-size: 16px;" class="form-control" id="exibirtotaldevidocustastaxas" name="exibirtotaldevidocustastaxas" placeholder="" disabled>
   </div>    
 </form>
 
+-->
+
 </div>
+
+
 
 <!--********************************************************************--> 
 
@@ -537,11 +549,16 @@ $pag = 'danos_materiais_morais';
 <small><div id="mensagem" align="center"></div></small>               
 
 <div class="modal-footer">
+<!--
+    <a href="index.php?pag=lista_custas"> <button id="editartudo" class="btn btn-primary">Editar</button></a> 
 
-    <a href="../rel/calculos.php" target="_blank"><i class="fa fa-file-text-o"></i><span>  Relatório</span></a>                    
+    <a href="../rel/modulo_custas.php" target="_blank"><button id="salvartudo" class="btn btn-primary">Imprimir</button></a> -->
+
 
 </div>
 
+
+                
 
 <!--**********************Scripts*************************************-->
 
@@ -568,6 +585,7 @@ if($total_reg > 0){
 ?>
 
 
+
 <script type="text/javascript">
 
     $(document).ready(function(){
@@ -575,7 +593,7 @@ if($total_reg > 0){
 
 //inclusão de datapickers nos eventos de datas
 
-$("#datafinalcorrecaocustas,#dataeventocustastaxa,#dataeventoextras,#dataeventocustascalculadas,#dataeventoembargos").datepicker({
+$("#datafinalcorrecao,#dataeventocustastaxa,#dataeventoextras,#dataeventocustascalculadas,#dataeventoembargos").datepicker({
     changeMonth: true,
     changeYear: true,
     firstDay: 1,           
@@ -605,7 +623,7 @@ $('#selecttipocustas').change(function(){
 
     var tipocustascalculadas = document.getElementById('selecttipocustas').value
 
-    if(tipocustascalculadas=="semcustascalculadas"){
+    if(tipocustascalculadas=="Sem custas"){
 
         $('#dataeventocustascalculadas').attr("readonly",true)
         $('#dataeventocustascalculadas').attr("disabled",true)
@@ -650,7 +668,7 @@ $('#selectcustastaxa').change(function(){
 
     var tipocustastaxas = document.getElementById('selectcustastaxa').value
 
-    if(tipocustastaxas =="semcustastaxa"){
+    if(tipocustastaxas =="Sem custas"){
 
         $('#dataeventocustastaxa').attr("readonly",true)
         $('#dataeventocustastaxa').attr("disabled",true)
@@ -698,7 +716,7 @@ $('#selecttipoembargos').change(function(){
 
     var tipoembargos = document.getElementById('selecttipoembargos').value
 
-    if(tipoembargos =="semcustastaxasembargos"){
+    if(tipoembargos =="Sem custas"){
 
         $('#dataeventoembargos').attr("readonly",true)
         $('#dataeventoembargos').attr("disabled",true)
@@ -745,7 +763,7 @@ $('#selectcustasdespesasextras').change(function(){
 
     var tipocustasdepesasextras = document.getElementById('selectcustasdespesasextras').value
 
-    if(tipocustasdepesasextras =="semcustasextras"){
+    if(tipocustasdepesasextras =="Sem custas"){
 
         $("#dataeventoextras").attr('disabled',true)
         $('#historicoextras').attr("readonly",true)
@@ -783,9 +801,9 @@ var jsonJS = <?php echo json_encode($indice)?>
 
 //função que atualiza as custas calculadas pelo 2º grau/contadoria/diversas
 
-$('#dataeventocustascalculadas,#datafinalcorrecaocustas,#custasprocessuaiscalculadas,#taxajudiciariacalculada').change(function(){
+$('#dataeventocustascalculadas,#datafinalcorrecao,#custasprocessuaiscalculadas,#taxajudiciariacalculada').change(function(){
 
-    var end = $('#datafinalcorrecaocustas').datepicker().val()
+    var end = $('#datafinalcorrecao').datepicker().val()
     var endCorrecaoMonetaria = end.replace(/(\d*)-(\d*)-(\d*).*/, '01-$2-$3')  
     var start = $('#dataeventocustascalculadas').datepicker().val()
     var startCorrecaoMonetaria = start.replace(/(\d*)-(\d*)-(\d*).*/, '01-$2-$3')    
@@ -812,7 +830,7 @@ $('#dataeventocustascalculadas,#datafinalcorrecaocustas,#custasprocessuaiscalcul
     parseFloat($('#taxajudiciariaatualizada').val())
     
     $('#totalcustascalculadasatualizadas').val(parseFloat($('#custasprocessuaisatualizadas').val())+
-        parseFloat($('#taxajudiciariaatualizada').val())).toFixed(2) 
+        parseFloat($('#taxajudiciariaatualizada').val()))
     
 }    
 
@@ -822,9 +840,9 @@ $('#dataeventocustascalculadas,#datafinalcorrecaocustas,#custasprocessuaiscalcul
 
 //função que calculas as custas/taxas
 
-$('#dataeventocustastaxa,#datafinalcorrecaocustas,#valorcustastaxa').change(function(){
+$('#dataeventocustastaxa,#datafinalcorrecao,#valorcustastaxa').change(function(){
 
-    var end = $('#datafinalcorrecaocustas').datepicker().val()
+    var end = $('#datafinalcorrecao').datepicker().val()
     var endCorrecaoMonetaria = end.replace(/(\d*)-(\d*)-(\d*).*/, '01-$2-$3') 
     var start = $('#dataeventocustastaxa').datepicker().val()
     var startCorrecaoMonetaria = start.replace(/(\d*)-(\d*)-(\d*).*/, '01-$2-$3') 
@@ -890,9 +908,9 @@ $('#dataeventocustastaxa,#datafinalcorrecaocustas,#valorcustastaxa').change(func
 
 //função que calculas as embargos do devedor e de terceiros
 
-$('#dataeventoembargos,#datafinalcorrecaocustas,#valorembargos,#selectpercentualembargos').change(function(){
+$('#dataeventoembargos,#datafinalcorrecao,#valorembargos,#selectpercentualembargos').change(function(){
 
-    var end = $('#datafinalcorrecaocustas').datepicker().val()
+    var end = $('#datafinalcorrecao').datepicker().val()
     var endCorrecaoMonetaria = end.replace(/(\d*)-(\d*)-(\d*).*/, '01-$2-$3')
     var start = $('#dataeventoembargos').datepicker().val()
     var startCorrecaoMonetaria = start.replace(/(\d*)-(\d*)-(\d*).*/, '01-$2-$3')
@@ -906,9 +924,9 @@ $('#dataeventoembargos,#datafinalcorrecaocustas,#valorembargos,#selectpercentual
     var valorcausaembargosatualizado = valorcausaembargos*result    
     var custasprocessuaisembargos
     var taxajudiciariaembargos
-    var selecttipoembargos = document.getElementById('selectpercentualembargos').value   
+    var selectpercentualembargos = document.getElementById('selectpercentualembargos').value   
 
-    if(moment(startformatado).isBefore('2021-03-05') && selecttipoembargos =='custasiniciaisembargos'){
+    if(moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='0,3'){
 
         custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
         taxajudiciariaembargos = 0.003 * valorcausaembargosatualizado
@@ -917,9 +935,9 @@ $('#dataeventoembargos,#datafinalcorrecaocustas,#valorembargos,#selectpercentual
 
             taxajudiciariaembargos = 36.68 * 0.3
 
-        }     
+        }
 
-    } else if (moment(startformatado).isBefore('2021-03-05') && selecttipoembargos =='custascomplementarembargos') {
+    } else if (moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='0,7') {
 
         custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
         taxajudiciariaembargos = 0.007 * valorcausaembargosatualizado
@@ -931,7 +949,7 @@ $('#dataeventoembargos,#datafinalcorrecaocustas,#valorembargos,#selectpercentual
         }  
 
 
-    } else if (moment(startformatado).isBefore('2021-03-05') && selecttipoembargos =='custastotaisembargos') {
+    } else if (moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='1,0') {
 
         custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
         taxajudiciariaembargos = 0.01 * valorcausaembargosatualizado
@@ -943,7 +961,7 @@ $('#dataeventoembargos,#datafinalcorrecaocustas,#valorembargos,#selectpercentual
         }
 
 
-    } else if (moment(startformatado).isAfter('2021-03-05') && selecttipoembargos =='custasiniciaisembargos'){ 
+    } else if (moment(startformatado).isAfter('2021-03-05') && selectpercentualembargos =='0,3'){ 
 
         custasprocessuaisembargos = 0.003 * valorcausaembargosatualizado
         taxajudiciariaembargos = 0.003 * valorcausaembargosatualizado
@@ -960,7 +978,7 @@ $('#dataeventoembargos,#datafinalcorrecaocustas,#valorembargos,#selectpercentual
         }
 
 
-    } else if (moment(startformatado).isAfter('2021-03-05') && selecttipoembargos =='custascomplementarembargos'){ 
+    } else if (moment(startformatado).isAfter('2021-03-05') && selectpercentualembargos =='0,7'){ 
 
         custasprocessuaisembargos = 0.007 * valorcausaembargosatualizado
         taxajudiciariaembargos = 0.007 * valorcausaembargosatualizado
@@ -977,7 +995,7 @@ $('#dataeventoembargos,#datafinalcorrecaocustas,#valorembargos,#selectpercentual
 
         }
 
-    } else if (moment(startformatado).isAfter('2021-03-05') && selecttipoembargos =='custastotaisembargos'){ 
+    } else if (moment(startformatado).isAfter('2021-03-05') && selectpercentualembargos =='1,0'){ 
 
         custasprocessuaisembargos = 0.01 * valorcausaembargosatualizado
         taxajudiciariaembargos = 0.01 * valorcausaembargosatualizado
@@ -1012,7 +1030,9 @@ $('#dataeventoembargos,#datafinalcorrecaocustas,#valorembargos,#selectpercentual
     
     $('#totalembargos').val(somatotalembargos.toFixed(2))
     
-}    
+}
+
+
 
 })
 
@@ -1038,7 +1058,7 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
 
         alert('Não há custas e despesas extras ante de 05/03/2021!')
 
-        $('#selectcustasdespesasextras').val('semcustasextras')
+        $('#selectcustasdespesasextras').val('Sem custas')
         $('#dataeventoextras').val('')
         $('#historicoextras').val('')
         $('#quantidadeextras').val('')
@@ -1052,42 +1072,42 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
         $('#totalextras').attr("readonly",true)
 
 
-    } else if(moment(startformatado).isAfter('2021-03-05') && selectcustasdespesasextras =='cartaprecatoriaextras'){
+    } else if(moment(startformatado).isAfter('2021-03-05') && selectcustasdespesasextras =='Carta precatória'){
 
         valorunitario = 176.26
         $('#valorextras').val(valorunitario.toFixed(2))    
 
-    } else if (moment(startformatado).isAfter('2021-03-05') && selectcustasdespesasextras =='cartaordemextras') {
+    } else if (moment(startformatado).isAfter('2021-03-05') && selectcustasdespesasextras =='Carta de ordem') {
 
         valorunitario = 176.26
         $('#valorextras').val(valorunitario.toFixed(2))   
 
-    } else if (moment(startformatado).isAfter('2022-03-11') && selectcustasdespesasextras =='publicacaoextras') {
+    } else if (moment(startformatado).isAfter('2022-03-11') && selectcustasdespesasextras =='Publicação') {
 
         valorunitario = 20.00
         $('#valorextras').val(valorunitario.toFixed(2))
 
     } else if (moment(startformatado).isAfter('2022-03-11') && selectcustasdespesasextras ==
-        'portesextras') {
+        'Porte') {
 
         valorunitario = 20.00
         $('#valorextras').val(valorunitario.toFixed(2))
 
-    } else if (moment(startformatado).isAfter('2022-03-11') && selectcustasdespesasextras =='citacoesintimacaoextras') {
+    } else if (moment(startformatado).isAfter('2022-03-11') && selectcustasdespesasextras =='Citação/Intimação') {
 
         valorunitario = 20.00
         $('#valorextras').val(valorunitario.toFixed(2))    
 
-    } else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='certidaoextras') {
+    } else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='Certidão') {
 
         valorunitario = 20.00
         $('#valorextras').val(valorunitario.toFixed(2))
 
-    } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='certidaoextras') {
+    } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='Certidão') {
 
         alert("Não há cobrança dessas custas/taxas antes de 11-03-2023!")
 
-        $('#selectcustasdespesasextras').val('semcustasextras')
+        $('#selectcustasdespesasextras').val('Sem custas')
         $('#dataeventoextras').val('')
         $('#historicoextras').val('')
         $('#quantidadeextras').val('')
@@ -1103,16 +1123,16 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
         $('#totalextras').val('') 
 
 
-    }else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='informacoesextras') {
+    }else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='Informações') {
 
         valorunitario = 40.00
         $('#valorextras').val(valorunitario.toFixed(2))
 
-    } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='informacoesextras') {
+    } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='Informações') {
 
         alert("Não há cobrança dessas custas/taxas antes de 11-03-2023!")
 
-        $('#selectcustasdespesasextras').val('semcustasextras')
+        $('#selectcustasdespesasextras').val('Sem custas')
         $('#dataeventoextras').val('')
         $('#historicoextras').val('')
         $('#quantidadeextras').val('')
@@ -1130,16 +1150,16 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
 
 
 
-    } else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='bloqueioextras') {
+    } else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='Bloqueio') {
 
         valorunitario = 40.00
         $('#valorextras').val(valorunitario.toFixed(2))
 
-    } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='bloqueioextras') {
+    } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='Bloqueio') {
 
         alert("Não há cobrança dessas custas/taxas antes de 11-03-2023!")
 
-        $('#selectcustasdespesasextras').val('semcustasextras')
+        $('#selectcustasdespesasextras').val('Sem custas')
         $('#dataeventoextras').val('')
         $('#historicoextras').val('')
         $('#quantidadeextras').val('')
@@ -1193,10 +1213,24 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
  </script>
 
 
-<script type="text/javascript"> var pag = "<?=$pag?>" </script>
+<script type="text/javascript"> var pag = "<?=$pag?>" 
 
-<script src = "js/ajax2.js"></script>
+
+</script>
+
+
+
+<script src = "js/ajax_modulo_custas.js"></script>
 
 <script src = "js/ajax.js"></script>
 
 <script> /* $(document).ready(function(){$("#dataevento").mask("99/99/9999");});*/</script>
+
+
+<div id="page-wrapper">
+
+    <?php
+    require_once('lista_custas.php');
+    ?>
+
+</div>
