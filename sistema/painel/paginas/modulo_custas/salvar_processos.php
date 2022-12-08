@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 require_once('../../../conexao.php');
 $tabela_modulo_custas_processo = 'modulo_custas_processo';
 $processo=$_POST['processo'];
@@ -16,8 +16,9 @@ $query->bindValue(":devedores","$devedores");
 
 $query->execute();
 
+$id_processo = $pdo->lastInsertId();
+$_SESSION['id_processo'] = $id_processo;
 
 echo 'Salvo com Sucesso';
-
 
  ?>

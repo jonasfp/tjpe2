@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 require_once('../../../conexao.php');
 $tabela = 'modulo_custas_custas_taxa';
 $tipo=$_POST['selectcustastaxa'];
@@ -13,8 +13,9 @@ $valor_causa=$_POST['valorcustastaxa'];
 $valor_custas=$_POST['custasprocessuaiscustastaxa'];
 $valor_taxa=$_POST['taxajudiciariacustastaxa'];
 $total_custas_taxa=$_POST['totalcustastaxa'];
+$id_processo_custas_taxas = $_SESSION['id_processo'];
 
-$query = $pdo->prepare("INSERT INTO $tabela SET tipo =:tipo, dataevento = :dataevento,historico =:historico, valor_causa = :valor_causa, valor_custas =:valor_custas, valor_taxa = :valor_taxa, total_custas_taxa =:total_custas_taxa");
+$query = $pdo->prepare("INSERT INTO $tabela SET tipo =:tipo, dataevento = :dataevento,historico =:historico, valor_causa = :valor_causa, valor_custas =:valor_custas, valor_taxa = :valor_taxa, total_custas_taxa =:total_custas_taxa, id_processo=:id_processo");
 
 $query->bindValue(":tipo","$tipo");
 $query->bindValue(":dataevento","$bddataevento");
@@ -23,6 +24,7 @@ $query->bindValue(":valor_causa","$valor_causa");
 $query->bindValue(":valor_custas","$valor_custas");
 $query->bindValue(":valor_taxa","$valor_taxa");
 $query->bindValue(":total_custas_taxa","$total_custas_taxa");
+$query->bindValue(":id_processo","$id_processo_custas_taxas");
 
 $query->execute();
 

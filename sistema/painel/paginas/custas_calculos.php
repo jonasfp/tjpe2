@@ -10,13 +10,20 @@ $pag = 'modulo_custas';
 
 <script src="https://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
 <script src='https://momentjs.com/downloads/moment.min.js'></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+<link href="jquery.toast.min.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/relatorio.css">
 
 
 <!--**********************Tabela dados do processo***************************-->
 <div style="display: flex; justify-content: center; margin-bottom:1.0em;"> <img src="../img/tjpe.png"> </div>
 <h3 style="text-align:center">TRIBUNAL DE JUSTIÇA DE PERNAMBUCO</h3>
+
+<div>
+
+
+</div>   
 
 
 <h4 style="text-align:center">CONTADORIA</h4>
@@ -37,7 +44,7 @@ $pag = 'modulo_custas';
         <tr>
             <td>       
 
-                <input type="text" class="form-control" id="processo" name="processo" placeholder="Número do processo">             
+                <input type="text" class="form-control" id="processo" name="processo" placeholder="Número do processo" required>             
             </td>
 
             <td>
@@ -68,15 +75,16 @@ $pag = 'modulo_custas';
 
             <td>
 
-                <input type="text" class="form-control" id="devedores" name="devedores" placeholder="Devedor">             
+                <input type="text" class="form-control" id="devedores" name="devedores" placeholder="Devedor" required>             
             </td>
 
             <td>               
-                <button type="submit" id="salvarLinhaprocesso" name="salvarLinhaprocesso" class="salvarLinhaprocesso"><i class="fa fa-save" title="Salvar linha"></i></button>
-                
+                <button type="submit" id="salvarProcesso" name="salvarProcesso" class="salvarProcesso"><i class="fa fa-plus" title="Incluir"></i></button>
+            
 
             </td>
 
+            
         </tr>   
 
     </tbody>
@@ -121,17 +129,16 @@ $pag = 'modulo_custas';
             </select>   
         </div>  
 
-    </td>
+        </td>
 
-    <td>
+        <td>
         <div>
-            <input placeholder="Data final" type="text" id="datafinalcorrecao" name="datafinalcorrecao" class="form-control"></div>   
+            <input placeholder="Data final" type="text" id="datafinalcorrecao" name="datafinalcorrecao" class="form-control" required></div>
 
         </td>
 
         <td>                    
-            <button type="submit" id="salvarLinhaParametrosCustas" name="salvarLinhaParametrosCustas" class="salvarLinhaParametros"><i class="fa fa-save" title="Salvar linha"></i></button>
-            
+            <button type="submit" id="salvarParametrosCustas" name="salvarParametrosCustas" class="salvarParametrosCustas"><i class="fa fa-plus" title="Incluir"></i></button>            
         </td>            
 
     </tr>
@@ -180,45 +187,36 @@ $pag = 'modulo_custas';
         </td>
 
         <td>
+            <input placeholder="Data" type="text" id="dataeventocustascalculadas" name="dataeventocustascalculadas" class="form-control" required>
+        </td>
 
-            <input placeholder="Data" type="text" id="dataeventocustascalculadas" name="dataeventocustascalculadas" class="form-control">
+        <td>
+            <input placeholder="Histórico" type="text" id="historicocustascalculadas" name="historicocustascalculadas" class="form-control" required>
+        </td>
 
+        <td>
+            <input type="text" class="form-control" id="custasprocessuaiscalculadas" name="custasprocessuaiscalculadas" placeholder="Custas processuais" onkeyup="somenteNumeros(this)" required>             
         </td>
 
         <td>
 
-            <input placeholder="Histórico" type="text" id="historicocustascalculadas" name="historicocustascalculadas" class="form-control">
-
+            <input type="text" class="form-control" id="taxajudiciariacalculada" name="taxajudiciariacalculada" placeholder="Valor" onkeyup="somenteNumeros(this)" required>             
         </td>
 
         <td>
-
-            <input type="text" class="form-control" id="custasprocessuaiscalculadas" name="custasprocessuaiscalculadas" placeholder="Custas processuais" onkeyup="somenteNumeros(this)">             
-        </td>
-
-        <td>
-
-            <input type="text" class="form-control" id="taxajudiciariacalculada" name="taxajudiciariacalculada" placeholder="Valor" onkeyup="somenteNumeros(this)">             
-        </td>
-
-        <td>
-
             <input type="text" class="form-control" id="custasprocessuaisatualizadas" name="custasprocessuaisatualizadas" placeholder="Custas processuais">             
         </td>
 
         <td>
-
             <input type="text" class="form-control" id="taxajudiciariaatualizada" name="taxajudiciariaatualizada" placeholder="Taxa judiciaria">     
         </td>
 
         <td>
-
             <input type="text" class="form-control" id="totalcustascalculadasatualizadas" name="totalcustascalculadasatualizadas" placeholder="Total">             
         </td>
 
         <td>                
-            <button type="submit" id="inserirLinhaCustasCalculadas" name="inserirLinhaCustasCalculadas"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
-
+            <button type="submit" id="inserirLinhaCustasCalculadas" name="inserirLinhaCustasCalculadas"><i class="fa fa-plus" aria-hidden="true" title="Incluir"></i></button>
         </td>            
 
     </tbody>
@@ -274,18 +272,18 @@ $pag = 'modulo_custas';
 
         <td>
 
-            <input placeholder="Data" type="text" id="dataeventocustastaxa" name="dataeventocustastaxa" class="form-control">
+            <input placeholder="Data" type="text" id="dataeventocustastaxa" name="dataeventocustastaxa" class="form-control" required>
 
         </td>
 
         <td>
 
-            <input type="text" class="form-control" id="historicocustastaxa" name="historicocustastaxa" placeholder="Histórico">             
+            <input type="text" class="form-control" id="historicocustastaxa" name="historicocustastaxa" placeholder="Histórico" required>             
         </td>
 
         <td>
 
-            <input type="text" class="form-control" id="valorcustastaxa" name="valorcustastaxa" placeholder="Valor"  onkeyup="somenteNumeros(this)">             
+            <input type="text" class="form-control" id="valorcustastaxa" name="valorcustastaxa" placeholder="Valor"  onkeyup="somenteNumeros(this)" required>             
         </td>
 
         <td>
@@ -306,7 +304,7 @@ $pag = 'modulo_custas';
 
         <td>
 
-            <button type="submit" id="inserirLinhatotalcustastaxa" name="inserirLinhatotalcustastaxa"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
+            <button type="submit" id="inserirLinhatotalcustastaxa" name="inserirLinhatotalcustastaxa"><i class="fa fa-plus" aria-hidden="true" title="Incluir"></i></button>
 
         </td>            
 
@@ -357,18 +355,18 @@ $pag = 'modulo_custas';
 
         <td>
 
-            <input placeholder="Data" type="text" id="dataeventoembargos" name="dataeventoembargos" class="form-control">
+            <input placeholder="Data" type="text" id="dataeventoembargos" name="dataeventoembargos" class="form-control" required>
 
         </td>
 
         <td>
 
-            <input type="text" class="form-control" id="historicoembargos" name="historicoembargos" placeholder="Histórico">             
+            <input type="text" class="form-control" id="historicoembargos" name="historicoembargos" placeholder="Histórico" required>             
         </td>
 
         <td>
 
-            <input type="text" class="form-control" id="valorembargos" name="valorembargos" placeholder="Valor"  onkeyup="somenteNumeros(this)">             
+            <input type="text" class="form-control" id="valorembargos" name="valorembargos" placeholder="Valor"  onkeyup="somenteNumeros(this)" required>             
         </td>
 
         <td>
@@ -402,7 +400,7 @@ $pag = 'modulo_custas';
 
     <td>
 
-        <button type="submit" id="inserirLinhatotalembargos" name="inserirLinhatotalembargos"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
+        <button type="submit" id="inserirLinhatotalembargos" name="inserirLinhatotalembargos"><i class="fa fa-plus" aria-hidden="true" title="Incluir"></i></button>
 
     </td>            
 
@@ -461,18 +459,18 @@ $pag = 'modulo_custas';
 
           <td>
 
-            <input placeholder="Data" type="text" id="dataeventoextras" name="dataeventoextras" class="form-control" disabled>
+            <input placeholder="Data" type="text" id="dataeventoextras" name="dataeventoextras" class="form-control"  disabled required>
 
         </td>
 
         <td>
 
-            <input type="text" class="form-control" id="historicoextras" name="historicoextras" placeholder="Histórico">             
+            <input type="text" class="form-control" id="historicoextras" name="historicoextras" placeholder="Histórico" required>             
         </td>
 
         <td>
 
-            <input type="text" class="form-control" id="quantidadeextras" name="quantidadeextras" placeholder="Quantidade"  onkeyup="somenteNumeros(this)">             
+            <input type="text" class="form-control" id="quantidadeextras" name="quantidadeextras" placeholder="Quantidade"  onkeyup="somenteNumeros(this)" required>             
         </td>
 
         <td>
@@ -488,7 +486,7 @@ $pag = 'modulo_custas';
 
         <td>
 
-            <button type="submit" id="inserirLinhaExtras" name="inserirLinhaExtras"><i class="fa fa-plus" aria-hidden="true" title="Inserir linha"></i></button>
+            <button type="submit" id="inserirLinhaExtras" name="inserirLinhaExtras" ><i class="fa fa-plus" aria-hidden="true" title="Incluir"></i></button>
 
         </td>            
 
@@ -550,9 +548,9 @@ $pag = 'modulo_custas';
 
 <div class="modal-footer">
 <!--
-    <a href="index.php?pag=lista_custas"> <button id="editartudo" class="btn btn-primary">Editar</button></a> 
+    <a href="index.php?pag=lista_custas"> <button id="editartudo" class="btn btn-primary">Editar</button></a>
 
-    <a href="../rel/modulo_custas.php" target="_blank"><button id="salvartudo" class="btn btn-primary">Imprimir</button></a> -->
+    <a href="../rel/modulo_custas.php" target="_blank"><button id="salvartudo" class="btn btn-primary">Imprimir</button></a>  -->
 
 
 </div>
@@ -860,30 +858,36 @@ $('#dataeventocustastaxa,#datafinalcorrecao,#valorcustastaxa').change(function()
 
     if(moment(startformatado).isBefore('2021-03-05')){
 
-        custasprocessuaiscustastaxa = 176.26 + 0.008 * valorcausacustastaxaatualizado    
+        custasprocessuaiscustastaxa = 176.26+0.008*valorcausacustastaxaatualizado
         taxajudiciariacustastaxa = 0.01 * valorcausacustastaxaatualizado
-
-        if (taxajudiciariacustastaxa < 36.68) {
-
-            taxajudiciariacustastaxa = 36.68
-
-        }
-
+        
     } else {
 
         custasprocessuaiscustastaxa = 0.01 * valorcausacustastaxaatualizado    
         taxajudiciariacustastaxa = 0.01 * valorcausacustastaxaatualizado
-
-        if (custasprocessuaiscustastaxa < 176.26){
-
-            custasprocessuaiscustastaxa = 176.26
-        } 
-
-        if (taxajudiciariacustastaxa < 36.68){
-
-            taxajudiciariacustastaxa = 36.68
-        } 
+        
     }
+
+    if(custasprocessuaiscustastaxa > 36448.26 ){
+
+        custasprocessuaiscustastaxa = 36448.26
+
+    } else if (custasprocessuaiscustastaxa < 176.26){
+
+        custasprocessuaiscustastaxa = 176.26
+        
+    }
+
+    if(taxajudiciariacustastaxa > 36448.26 ){
+
+        taxajudiciariacustastaxa = 36448.26
+
+    } else if (taxajudiciariacustastaxa < 36.68){
+
+    taxajudiciariacustastaxa = 36.68
+        
+    }
+
     
     if(isNaN(custasprocessuaiscustastaxa) || isNaN(taxajudiciariacustastaxa)){
 
@@ -929,88 +933,189 @@ $('#dataeventoembargos,#datafinalcorrecao,#valorembargos,#selectpercentualembarg
     if(moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='0,3'){
 
         custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
-        taxajudiciariaembargos = 0.003 * valorcausaembargosatualizado
+        
 
-        if (taxajudiciariaembargos < 36.68 * 0.3) {
+    if (custasprocessuaisembargos > 36448.26){
 
-            taxajudiciariaembargos = 36.68 * 0.3
+        custasprocessuaisembargos = 36448.26 
 
-        }
+    } else if (custasprocessuaisembargos < 176.26){
+
+        custasprocessuaisembargos = 176.26
+
+    }
+
+    taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado
+
+    if (taxajudiciariaembargosintegral > 36448.26){
+
+        taxajudiciariaembargosintegral = 36448.26 
+
+
+    } else if (taxajudiciariaembargosintegral < 36.68){
+
+        taxajudiciariaembargosintegral = 36.68
+    }
+
+
+    taxajudiciariaembargos = 0.3 * taxajudiciariaembargosintegral
+
+    
 
     } else if (moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='0,7') {
 
         custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
-        taxajudiciariaembargos = 0.007 * valorcausaembargosatualizado
+        
 
-        if (taxajudiciariaembargos < 36.68 * 0.7) {
+    if (custasprocessuaisembargos > 36448.26){
 
-            taxajudiciariaembargos = 36.68 * 0.7
+        custasprocessuaisembargos = 36448.26 
 
-        }  
+    } else if (custasprocessuaisembargos < 176.26){
+
+        custasprocessuaisembargos = 176.26
+
+    }
+
+    taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado
+
+    if (taxajudiciariaembargosintegral > 36448.26){
+
+        taxajudiciariaembargosintegral = 36448.26 
+
+
+    } else if (taxajudiciariaembargosintegral < 36.68){
+
+        taxajudiciariaembargosintegral = 36.68
+    }
+
+
+    taxajudiciariaembargos = 0.7 * taxajudiciariaembargosintegral
 
 
     } else if (moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='1,0') {
 
-        custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
-        taxajudiciariaembargos = 0.01 * valorcausaembargosatualizado
+       custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
+        
 
-        if (taxajudiciariaembargos < 36.68 ) {
+    if (custasprocessuaisembargos > 36448.26){
 
-            taxajudiciariaembargos = 36.68
+        custasprocessuaisembargos = 36448.26 
 
-        }
+    } else if (custasprocessuaisembargos < 176.26){
+
+        custasprocessuaisembargos = 176.26
+
+    }
+
+    taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado
+
+    if (taxajudiciariaembargosintegral > 36448.26){
+
+        taxajudiciariaembargosintegral = 36448.26 
+
+
+    } else if (taxajudiciariaembargosintegral < 36.68){
+
+        taxajudiciariaembargosintegral = 36.68
+    }
+
+
+    taxajudiciariaembargos = 1.0 * taxajudiciariaembargosintegral
 
 
     } else if (moment(startformatado).isAfter('2021-03-05') && selectpercentualembargos =='0,3'){ 
 
-        custasprocessuaisembargos = 0.003 * valorcausaembargosatualizado
-        taxajudiciariaembargos = 0.003 * valorcausaembargosatualizado
+    custasprocessuaisembargosintegral = 0.01 * valorcausaembargosatualizado
+    taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado   
 
-        if (taxajudiciariaembargos < 36.68 * 0.3) {
+    if (custasprocessuaisembargosintegral > 36448.26){
 
-            taxajudiciariaembargos = 36.68 * 0.3
-        }    
+        custasprocessuaisembargosintegral = 36448.26 
 
-        if (custasprocessuaisembargos < 176.26 * 0.3) {
+    } else if (custasprocessuaisembargosintegral < 176.26){
 
-            custasprocessuaisembargos = 176.26 * 0.3
+        custasprocessuaisembargosintegral = 176.26
 
-        }
+    }
+
+   
+    if (taxajudiciariaembargosintegral > 36448.26){
+
+        taxajudiciariaembargosintegral = 36448.26 
 
 
-    } else if (moment(startformatado).isAfter('2021-03-05') && selectpercentualembargos =='0,7'){ 
+    } else if (taxajudiciariaembargosintegral < 36.68){
 
-        custasprocessuaisembargos = 0.007 * valorcausaembargosatualizado
-        taxajudiciariaembargos = 0.007 * valorcausaembargosatualizado
+        taxajudiciariaembargosintegral = 36.68
+    }
 
-        if (taxajudiciariaembargos < 36.68 * 0.7) {
 
-            taxajudiciariaembargos = 36.68 * 0.7
+    taxajudiciariaembargos = 0.3 * taxajudiciariaembargosintegral
+    custasprocessuaisembargos = 0.3 * custasprocessuaisembargosintegral 
 
-        }
 
-        if (custasprocessuaisembargos < 176.26 * 0.7) {
 
-            custasprocessuaisembargos = 176.26 * 0.7
+    } else if (moment(startformatado).isAfter('2021-03-05') && selectpercentualembargos =='0,7'){
 
-        }
+    custasprocessuaisembargosintegral = 0.01 * valorcausaembargosatualizado
+    taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado   
+
+    if (custasprocessuaisembargosintegral > 36448.26){
+
+        custasprocessuaisembargosintegral = 36448.26 
+
+    } else if (custasprocessuaisembargosintegral < 176.26){
+
+        custasprocessuaisembargosintegral = 176.26
+
+    }
+
+   
+    if (taxajudiciariaembargosintegral > 36448.26){
+
+        taxajudiciariaembargosintegral = 36448.26 
+
+
+    } else if (taxajudiciariaembargosintegral < 36.68){
+
+        taxajudiciariaembargosintegral = 36.68
+    }
+
+
+    taxajudiciariaembargos = 0.7 * taxajudiciariaembargosintegral
+    custasprocessuaisembargos = 0.7 * custasprocessuaisembargosintegral 
+
 
     } else if (moment(startformatado).isAfter('2021-03-05') && selectpercentualembargos =='1,0'){ 
 
-        custasprocessuaisembargos = 0.01 * valorcausaembargosatualizado
-        taxajudiciariaembargos = 0.01 * valorcausaembargosatualizado
+    custasprocessuaisembargosintegral = 0.01 * valorcausaembargosatualizado
+    taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado   
 
-        if (taxajudiciariaembargos < 36.68) {
+    if (custasprocessuaisembargosintegral > 36448.26){
 
-            taxajudiciariaembargos = 36.68 
+        custasprocessuaisembargosintegral = 36448.26 
 
-        }
+    } else if (custasprocessuaisembargosintegral < 176.26){
 
-        if (custasprocessuaisembargos < 176.26 ) {
+        custasprocessuaisembargosintegral = 176.26
 
-            custasprocessuaisembargos = 176.26
+    }
 
-        }
+   
+    if (taxajudiciariaembargosintegral > 36448.26){
+
+        taxajudiciariaembargosintegral = 36448.26 
+
+
+    } else if (taxajudiciariaembargosintegral < 36.68){
+
+        taxajudiciariaembargosintegral = 36.68
+    }
+
+
+    taxajudiciariaembargos = 1.0 * taxajudiciariaembargosintegral
+    custasprocessuaisembargos = 1.0 * custasprocessuaisembargosintegral 
 
     }
 
@@ -1056,7 +1161,7 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
 
     if(moment(startformatado).isBefore('2021-03-05')){
 
-        alert('Não há custas e despesas extras ante de 05/03/2021!')
+        alert('Não há custas e despesas extras antes de 05/03/2021!')
 
         $('#selectcustasdespesasextras').val('Sem custas')
         $('#dataeventoextras').val('')
@@ -1219,18 +1324,43 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
 </script>
 
 
-
 <script src = "js/ajax_modulo_custas.js"></script>
 
-<script src = "js/ajax.js"></script>
 
-<script> /* $(document).ready(function(){$("#dataevento").mask("99/99/9999");});*/</script>
+<div class = "bs-example widget-shadow" style="padding: 15px" id="listar"> </div>
+
+<script>
 
 
-<div id="page-wrapper">
+function excluir(id,tabela){
 
-    <?php
-    require_once('lista_custas.php');
-    ?>
+       $.ajax({
+        url: 'paginas/modulo_custas_lista/excluir.php',
+        method: 'POST',
+        data: {id,tabela},
+        dataType: "text",
 
-</div>
+        success: function (mensagem) {            
+            if (mensagem.trim() == "Excluído com Sucesso") {                
+                listar();                
+            } else {
+                    $('#mensagem-excluir').addClass('text-danger')
+                    $('#mensagem-excluir').text(mensagem)
+                }
+
+        },      
+
+    });
+}
+
+
+</script>
+
+<script>
+   
+        jQuery("#processo")
+        .mask("9999999-99.9999.9.99.9999")
+      
+   
+</script>
+

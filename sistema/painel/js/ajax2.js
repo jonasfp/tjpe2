@@ -3,8 +3,7 @@
 $("#formCiveisProcessos").submit(function () {
 
     event.preventDefault();
-    var formData = new FormData(this);
-   
+    var formData = new FormData(this);   
     
     $.ajax({
         url: 'paginas/' + pag + "/salvar_processos.php",
@@ -14,8 +13,7 @@ $("#formCiveisProcessos").submit(function () {
         success: function (mensagem) {
             $('#mensagem').text('');
             $('#mensagem').removeClass()
-            if (mensagem.trim() == "Salvo com Sucesso") {
-                
+            if (mensagem.trim() == "Salvo com Sucesso") {                
                
             }
 

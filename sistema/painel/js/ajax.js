@@ -4,6 +4,7 @@ $(document).ready(function(){
 });
 
 function listar(){
+    
 	$.ajax({
 		//url:'paginas/'+ pag + '/calculos.php',        
         url:'paginas/'+ pag2 + '/listar.php',
@@ -20,11 +21,13 @@ function listar(){
 }
 
 
-function excluir(id){
-    $.ajax({
-        url: 'paginas/' + pag + "/excluir.php",
+function excluir(id,tabela){
+
+
+       $.ajax({
+        url: 'paginas/' + pag2 + "/excluir.php",
         method: 'POST',
-        data: {id},
+        data: {id,tabela},
         dataType: "text",
 
         success: function (mensagem) {            

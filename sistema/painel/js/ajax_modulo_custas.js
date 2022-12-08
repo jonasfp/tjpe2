@@ -1,13 +1,11 @@
 
 /* Salvar calculos modulo custas*/
 
-$("#formCustasProcesso").submit(function () {
+$("#formCustasProcesso").submit(function (event) { 
 
     event.preventDefault();
     var formData = new FormData(this);
-    
-    alert(pag)
-      
+        
     $.ajax({
         url: 'paginas/' + pag + "/salvar_processos.php",
         type: 'POST',
@@ -18,8 +16,8 @@ $("#formCustasProcesso").submit(function () {
             $('#mensagem').removeClass()
             if (mensagem.trim() == "Salvo com Sucesso") {
 
-                        
-             
+                 listar()
+
             }
 
             else {
@@ -37,16 +35,24 @@ $("#formCustasProcesso").submit(function () {
 
     });
 
+    $('.salvarProcesso').prop('disabled', true);
+    $('.salvarProcesso').css("backgroundColor", "grey");
+
 });
 
 
+$("#formCustasParametros").submit(function (event) {
+           
+    if( $('.salvarProcesso').prop('disabled') == false){
 
-$("#formCustasParametros").submit(function () {
+        alert("O número do processo, vara e devedor(es) devem ser salvos antes dos parâmetros!")
+    
+    } else {
 
-    event.preventDefault();
-    var formData = new FormData(this);
-       
-    $.ajax({
+        event.preventDefault();
+        var formData = new FormData(this);
+
+        $.ajax({
         url: 'paginas/' + pag + "/salvar_parametros.php",
         type: 'POST',
         data: formData,
@@ -54,7 +60,9 @@ $("#formCustasParametros").submit(function () {
         success: function (mensagem) {
             $('#mensagem').text('');
             $('#mensagem').removeClass()
-            if (mensagem.trim() == "Salvo com Sucesso") {   
+            if (mensagem.trim() == "Salvo com Sucesso") {
+
+            listar()                      
                
             }
 
@@ -71,10 +79,22 @@ $("#formCustasParametros").submit(function () {
 
     });
 
+
+
+    $('.salvarParametrosCustas').prop('disabled', true);
+    $('.salvarParametrosCustas').css("backgroundColor", "grey");
+
+    }
+
 });
 
-$("#formCustasCalculadas").submit(function () {
+$("#formCustasCalculadas").submit(function (event) {
 
+    if( $('.salvarProcesso').prop('disabled') == false){
+
+        alert("O número do processo, vara e devedor(es) devem ser salvos antes dos parâmetros!")
+    
+    } else {
 
     event.preventDefault();
     var formData = new FormData(this); 
@@ -87,7 +107,17 @@ $("#formCustasCalculadas").submit(function () {
             $('#mensagem').text('');
             $('#mensagem').removeClass()
             if (mensagem.trim() == "Salvo com Sucesso") {
-               
+
+                listar()
+                
+            $('#dataeventocustascalculadas').val('');
+            $('#historicocustascalculadas').val('');
+            $('#custasprocessuaiscalculadas').val('');
+            $('#taxajudiciariacalculada').val('');
+            $('#custasprocessuaisatualizadas').val('');
+            $('#taxajudiciariaatualizada').val('');
+            $('#totalcustascalculadasatualizadas').val('');
+                     
     
             }
 
@@ -103,12 +133,21 @@ $("#formCustasCalculadas").submit(function () {
         contentType: false,
         processData: false,
 
-    });  
+    });
+
+
+    }  
 
 
 });
 
-$("#formCustasTaxa").submit(function () {
+$("#formCustasTaxa").submit(function (event) {
+
+    if( $('.salvarProcesso').prop('disabled') == false){
+
+        alert("O número do processo, vara e devedor(es) devem ser salvos antes dos parâmetros!")
+    
+    } else {
 
     event.preventDefault();
     var formData = new FormData(this);   
@@ -123,8 +162,14 @@ $("#formCustasTaxa").submit(function () {
             $('#mensagem').removeClass()
             if (mensagem.trim() == "Salvo com Sucesso") {
 
-               
-                
+             listar()
+
+             $('#dataeventocustastaxa').val('');
+             $('#historicocustastaxa').val('');
+             $('#valorcustastaxa').val('');
+             $('#custasprocessuaiscustastaxa').val('');
+             $('#taxajudiciariacustastaxa').val('');
+             $('#totalcustastaxa').val('');
                
             }
 
@@ -141,12 +186,20 @@ $("#formCustasTaxa").submit(function () {
         contentType: false,
         processData: false,
 
-    });  
+    });
+
+    } 
 
 });
 
 
-$("#formCustasEmbargos").submit(function () {
+$("#formCustasEmbargos").submit(function (event) {
+
+    if( $('.salvarProcesso').prop('disabled') == false){
+
+        alert("O número do processo, vara e devedor(es) devem ser salvos antes dos parâmetros!")
+    
+    } else {
       
     event.preventDefault();
     var formData = new FormData(this);
@@ -161,8 +214,14 @@ $("#formCustasEmbargos").submit(function () {
             $('#mensagem').removeClass()
             if (mensagem.trim() == "Salvo com Sucesso") {
 
-               
-                
+              listar()
+
+              $('#dataeventoembargos').val('')
+              $('#historicoembargos').val('')
+              $('#valorembargos').val('')
+              $('#custasprocessuaisembargos').val('')
+              $('#taxajudiciariaembargos').val('')
+              $('#totalembargos').val('')
                
             }
 
@@ -178,12 +237,19 @@ $("#formCustasEmbargos").submit(function () {
         contentType: false,
         processData: false,
 
-    });  
+    });
+
+    }  
 
 });
 
-$("#formCustasExtras").submit(function () {
+$("#formCustasExtras").submit(function (event) {
 
+    if( $('.salvarProcesso').prop('disabled') == false){
+
+        alert("O número do processo, vara e devedor(es) devem ser salvos antes dos parâmetros!")
+    
+    } else {
       
     event.preventDefault();
     var formData = new FormData(this);   
@@ -196,7 +262,16 @@ $("#formCustasExtras").submit(function () {
         success: function (mensagem) {
             $('#mensagem').text('');
             $('#mensagem').removeClass()
-            if (mensagem.trim() == "Salvo com Sucesso") {                         
+            if (mensagem.trim() == "Salvo com Sucesso") {
+
+            listar()
+
+            $('#dataeventoextras').val('')
+            $('#historicoextras').val('')
+            $('#quantidadeextras').val('')
+            $('#valorextras').val('')
+            $('#totalextras').val('')
+               
                
             }
 
@@ -212,6 +287,27 @@ $("#formCustasExtras").submit(function () {
         contentType: false,
         processData: false,
 
-    });  
+    });
+
+    }  
 
 });
+
+
+function listar(){
+
+    $.ajax({
+        //url:'paginas/'+ pag + '/calculos.php',        
+        url:'paginas/modulo_custas_lista/listar.php',
+        method:'POST',
+        data:$('#form').serialize(),
+        dataType:"html",
+        
+        success:function(result){
+            
+            $("#listar").html(result);
+            $('#mensagem-excluir').text('');
+        }
+       
+    });
+}
