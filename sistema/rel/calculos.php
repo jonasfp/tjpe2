@@ -14,7 +14,7 @@
 <body>	
 
 <?php 
-require_once('../conexao.php');
+require_once('../util/conexao.php');
 $tabelaprocesso = 'processo';
 $tabelavara = 'vara';
 $tabelaindicescorrecao = 'indices_correcao';

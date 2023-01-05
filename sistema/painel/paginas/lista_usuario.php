@@ -2,7 +2,7 @@
 
 @session_start();
 require_once('verificar.php');
-require_once('../conexao.php');
+require_once('../util/conexao.php');
 
 $pag = 'lista_usuario';
 
@@ -72,11 +72,13 @@ $pag = 'lista_usuario';
 
 <script type="text/javascript">
 
-    var pag = "<?=$pag?>"  
-   
+    var pag = "<?=$pag?>" 
+
 </script>
 
 <script src = "js/ajax.js"></script>
+
+
 
 
 

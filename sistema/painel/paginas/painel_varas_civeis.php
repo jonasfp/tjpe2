@@ -1,7 +1,7 @@
 <?php 
 @session_start();
 require_once("verificar.php");
-require_once("../conexao.php");
+require_once("../util/conexao.php");
 
 ?>
 
@@ -10,7 +10,7 @@ require_once("../conexao.php");
 
     <div class="col_3">
 
-        <a href="index.php?pag=danos_materiais_morais">
+        <a href="index.php?pag=calculos_danos_materiais_morais">
             <div class="col-md-3 widget widget1">
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-users icon-rounded"></i>
@@ -21,7 +21,7 @@ require_once("../conexao.php");
         </a>
 
 
-        <a href="index.php?pag=expurgos_inflacionarios_verao">
+        <a href="index.php?pag=calculos_expurgos_inflacionarios_verao">
             <div class="col-md-3 widget widget1">
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-money user1 icon-rounded"></i>

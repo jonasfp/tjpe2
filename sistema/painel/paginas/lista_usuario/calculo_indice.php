@@ -1,6 +1,6 @@
 <?php 
 
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 
 
 $query = $pdo->query("SELECT encoge, DATE_FORMAT(data,'%m-%Y') AS nicedata FROM indice_encoge");

@@ -46,7 +46,7 @@ echo 'Salvo com Sucesso';
 
 */
 
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 $tabelaprocesso = 'processo';
 
 /*$id=$_POST['id'];*/

@@ -4,16 +4,20 @@
 <head>
     <title>Relatório de Cálculos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-
+    
 </head>
-<div class="bs-example widget-shadow" style="padding: 15px">
 
+<body>
 
-<body>  
+<div style="display: flex; justify-content: center; margin-bottom:1.0em;"> <img src="../img/tjpe.png"> </div>
+<h3 style="text-align:center">TRIBUNAL DE JUSTIÇA DE PERNAMBUCO</h3>
+
+<div> <h4 style="text-align:center">CONTADORIA</h4> </div>
+<div><h5 style="text-align:center; margin-bottom: 3.0em;">FORUM DES. RODOLFO AURELIANO - AV. DES. GUERRA BARRETO, S/N - ILHA DO LEITE - RECIFE /PE</h5></div>   
 
 <?php
-
-require_once('../conexao.php');
+session_start();
+require_once('../util/conexao.php');
 $tabelaprocesso = 'modulo_custas_processo';
 $tabelavara = 'vara';
 $tabelaindicescorrecao = 'indices_correcao';
@@ -22,6 +26,7 @@ $tabela_modulo_custas_calculadas = 'modulo_custas_calculadas';
 $tabela_modulo_custas_custas_taxa = 'modulo_custas_custas_taxa';
 $tabela_modulo_custas_embargos = 'modulo_custas_embargos';
 $tabela_modulo_custas_extras = 'modulo_custas_extras';
+$id_processo = $_SESSION['id_processo'];
 
 
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
@@ -41,10 +46,9 @@ echo <<<HTML
 
 HTML;    
 
-$query = $pdo->query("SELECT P.id, P.processo, V.nome, P.devedores FROM $tabelaprocesso P INNER JOIN $tabelavara V ON P.varaid=V.id");
+$query = $pdo->query("SELECT P.id, P.processo, V.nome, P.devedores FROM $tabelaprocesso P INNER JOIN $tabelavara V ON P.varaid=V.id WHERE P.id = $id_processo");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
-
 
 
 if($total_reg>0){
@@ -66,6 +70,7 @@ echo <<<HTML
 HTML;
 
 for($i=0; $i<$total_reg;$i++){
+    
     foreach ($res[$i] as $key => $value) {
         $id = $res[$i]['id'];
         $processo = $res[$i]['processo'];        
@@ -74,15 +79,17 @@ for($i=0; $i<$total_reg;$i++){
             
     }
 
+
+
 echo <<<HTML
 
 <tr>
 
- <td>{$processo}</td>
- <td>{$varaid}</td>
+ <td id="processo">{$processo}</td>
+ <td id="vara">{$varaid}</td>
  <td>{$devedores}</td>
+ <td style="text-align: right;"></td>
 
- 
 </tr>
 
 HTML;
@@ -105,12 +112,14 @@ else {
     //echo 'Não possui registro cadastrado!';
 }
 
+$query = $pdo->query("SELECT I.id, P.id, I.nomeindice, P.datafinal_correcao, P.id_processo FROM $tabela_modulo_custas_parametros P INNER JOIN $tabelaindicescorrecao I ON P.indice_correcao_id = I.id WHERE P.id_processo = $id_processo");
 
-$query = $pdo->query("SELECT I.id, I.nomeindice, P.datafinal_correcao FROM $tabela_modulo_custas_parametros P INNER JOIN $tabelaindicescorrecao I ON P.indice_correcao_id = I.id");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
 if($total_reg>0){
+
+    $tabela = $tabela_modulo_custas_parametros;
 
 echo <<<HTML
 
@@ -129,7 +138,7 @@ HTML;
 for($i=0; $i<$total_reg;$i++){
     foreach ($res[$i] as $key => $value) {
         $id = $res[$i]['id'];        
-        $indice_correcao_id = $res[$i]['nomeindice'];
+        $nomeindice = $res[$i]['nomeindice'];
         $datafinal_correcao = $res[$i]['datafinal_correcao'];
               
     }
@@ -140,11 +149,10 @@ $datafinal_correcaoF = date('m/Y', strtotime($datafinal_correcao));
 echo <<<HTML
 
 <tr>
- <td>{$indice_correcao_id}</td>
+ <td>{$nomeindice}</td>
  <td>{$datafinal_correcaoF}</td>
-
- <td style="text-align: right;"></td>
- 
+ <td style="text-align: right;"></td>      
+       
 </tr>
 
 HTML;
@@ -167,7 +175,7 @@ else {
     //echo 'Não possui registro cadastrado!';
 }
 
-$query = $pdo->query("SELECT * FROM $tabela_modulo_custas_calculadas ORDER BY dataevento asc");
+$query = $pdo->query("SELECT * FROM $tabela_modulo_custas_calculadas WHERE id_processo = $id_processo ORDER BY dataevento asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
@@ -210,12 +218,48 @@ for($i=0; $i<$total_reg;$i++){
         $total_custas_taxa = $res[$i]['total_custas_taxa'];        
     }
 
+    if($tipo == "Pagas"){
+
+        
+        $valor_custas = $valor_custas * (-1); 
+        $valor_taxa = $valor_taxa * (-1);
+        $valor_custas_atualizadas = $valor_custas_atualizadas * (-1); 
+        $valor_taxa_atualizada =   $valor_taxa_atualizada * (-1);
+        $total_custas_taxa = $total_custas_taxa * (-1);
+
+    $valor_custasPagasF = number_format($valor_custas, 2, ',', '.');
+    $valor_taxaPagasF = number_format($valor_taxa, 2, ',', '.');
+    $valor_custas_atualizadasPagasF = number_format($valor_custas_atualizadas, 2, ',', '.');
+    $valor_taxa_atualizadaPagasF = number_format($valor_taxa_atualizada, 2, ',', '.');
+    $total_custas_taxaPagasF = number_format($total_custas_taxa, 2, ',', '.');
+    
+
+    $valor_custasF = '('.$valor_custasPagasF.')';
+    $valor_taxaF = '('.$valor_taxaPagasF.')';
+    $valor_custas_atualizadasF = '('.$valor_custas_atualizadasPagasF.')';
+    $valor_taxa_atualizadaF = '('.$valor_taxa_atualizadaPagasF.')';
+    $total_custas_taxaF = '('.$total_custas_taxaPagasF.')';
+
+    $dataeventoF = date('m/Y', strtotime($dataevento));
+
+    } else {
+
+        $valor_custas = $valor_custas; 
+        $valor_taxa = $valor_taxa;
+        $valor_custas_atualizadas = $valor_custas_atualizadas; 
+        $valor_taxa_atualizada = $valor_taxa_atualizada;
+        $total_custas_taxa = $total_custas_taxa;
+
     $valor_custasF = number_format($valor_custas, 2, ',', '.');
     $valor_taxaF = number_format($valor_taxa, 2, ',', '.');
     $valor_custas_atualizadasF = number_format($valor_custas_atualizadas, 2, ',', '.');
     $valor_taxa_atualizadaF = number_format($valor_taxa_atualizada, 2, ',', '.');
     $total_custas_taxaF = number_format($total_custas_taxa, 2, ',', '.');
-    $dataeventoF = date('m/Y', strtotime($dataevento));
+    $dataeventoF = date('m/Y', strtotime($dataevento)); 
+
+    }
+
+    
 
 
 echo <<<HTML
@@ -230,8 +274,8 @@ echo <<<HTML
  <td>{$valor_custas_atualizadasF}</td> 
  <td>{$valor_taxa_atualizadaF}</td> 
  <td>{$total_custas_taxaF}</td>
+ <td style="text-align: right;"></td>
 
- 
 </tr>
 
 HTML;
@@ -254,7 +298,7 @@ else {
     //echo 'Não possui registro cadastrado!';
 }
 
-$query = $pdo->query("SELECT * FROM $tabela_modulo_custas_custas_taxa ORDER BY dataevento asc");
+$query = $pdo->query("SELECT * FROM $tabela_modulo_custas_custas_taxa WHERE id_processo = $id_processo ORDER BY dataevento asc ");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
@@ -296,6 +340,7 @@ for($i=0; $i<$total_reg;$i++){
         $total_custas_taxa = $res[$i]['total_custas_taxa'];      
            
     }
+
     $dataeventoF = date('m/Y', strtotime($dataevento));
     $valor_causaF = number_format($valor_causa, 2, ',', '.');
     $valor_custasF = number_format($valor_custas, 2, ',', '.');
@@ -314,7 +359,7 @@ echo <<<HTML
  <td>{$valor_custasF}</td> 
  <td>{$valor_taxaF}</td> 
  <td>{$total_custas_taxaF}</td>
-  
+
 </tr>
 
 HTML;
@@ -337,7 +382,7 @@ else {
     //echo 'Não possui registro cadastrado!';
 }
 
-$query = $pdo->query("SELECT * FROM $tabela_modulo_custas_embargos ORDER BY dataevento asc");
+$query = $pdo->query("SELECT * FROM $tabela_modulo_custas_embargos WHERE id_processo = $id_processo ORDER BY dataevento asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
@@ -400,7 +445,7 @@ echo <<<HTML
  <td>{$valor_taxaF}</td> 
  <td>{$valor_totalF}</td>
 
- </tr>
+</tr>
 
 HTML;
 
@@ -421,7 +466,7 @@ else {
     //echo 'Não possui registro cadastrado!';
 }
 
-$query = $pdo->query("SELECT * FROM $tabela_modulo_custas_extras ORDER BY dataevento asc");
+$query = $pdo->query("SELECT * FROM $tabela_modulo_custas_extras WHERE id_processo = $id_processo ORDER BY dataevento asc");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
@@ -480,7 +525,7 @@ echo <<<HTML
  <td>{$quantidade}</td>
  <td>{$valor_unitarioF}</td>
  <td>{$total_extrasF}</td>
- 
+
 </tr>
 
 HTML;
@@ -503,14 +548,14 @@ HTML;
 
 /*****************************CALCULADAS/PAGAS***********************************/
 
-$query_soma_custas_calculadas_pagas = "SELECT SUM(valor_custas_atualizadas) AS total_custas_taxa FROM $tabela_modulo_custas_calculadas";
+$query_soma_custas_calculadas_pagas = "SELECT SUM(valor_custas_atualizadas) AS total_custas_taxa FROM $tabela_modulo_custas_calculadas WHERE id_processo = $id_processo";
 $res_soma_custas = $pdo->prepare($query_soma_custas_calculadas_pagas);
 $res_soma_custas->execute();
 $row_total_custas=$res_soma_custas->fetch(PDO::FETCH_ASSOC);
 $total_custas_calculadas_pagas = $row_total_custas['total_custas_taxa'];
 
 
-$query_soma_taxa_calculadas_pagas = "SELECT SUM(valor_taxa_atualizada) AS total_custas_taxa FROM $tabela_modulo_custas_calculadas";
+$query_soma_taxa_calculadas_pagas = "SELECT SUM(valor_taxa_atualizada) AS total_custas_taxa FROM $tabela_modulo_custas_calculadas WHERE id_processo = $id_processo";
 $res_soma_taxa = $pdo->prepare($query_soma_taxa_calculadas_pagas);
 $res_soma_taxa->execute();
 $row_total_taxa=$res_soma_taxa->fetch(PDO::FETCH_ASSOC);
@@ -518,14 +563,14 @@ $total_taxa_calculadas_pagas = $row_total_taxa['total_custas_taxa'];
 
 /**********************************DEVIDAS*******************************/
 
-$query_soma_custas_taxas_devidas = "SELECT SUM(valor_custas) AS total_custas_taxa_devidas FROM $tabela_modulo_custas_custas_taxa";
+$query_soma_custas_taxas_devidas = "SELECT SUM(valor_custas) AS total_custas_taxa_devidas FROM $tabela_modulo_custas_custas_taxa WHERE id_processo = $id_processo";
 $res_soma_custas_devidas = $pdo->prepare($query_soma_custas_taxas_devidas);
 $res_soma_custas_devidas->execute();
 $row_total_custas_devidas=$res_soma_custas_devidas->fetch(PDO::FETCH_ASSOC);
 $total_custas_devidas = $row_total_custas_devidas['total_custas_taxa_devidas'];
 
 
-$query_soma_taxa_calculadas_pagas = "SELECT SUM(valor_taxa) AS total_custas_taxa_devidas FROM $tabela_modulo_custas_custas_taxa";
+$query_soma_taxa_calculadas_pagas = "SELECT SUM(valor_taxa) AS total_custas_taxa_devidas FROM $tabela_modulo_custas_custas_taxa WHERE id_processo = $id_processo";
 $res_soma_taxa_devida = $pdo->prepare($query_soma_taxa_calculadas_pagas);
 $res_soma_taxa_devida->execute();
 $row_total_taxa_devida=$res_soma_taxa_devida->fetch(PDO::FETCH_ASSOC);
@@ -533,7 +578,7 @@ $total_taxa_devida = $row_total_taxa_devida['total_custas_taxa_devidas'];
 
 /**********************************EMBARGOS*********************************/
 
-$query_soma_custas_embargos = "SELECT SUM(valor_custas) AS total_custas_embargos FROM $tabela_modulo_custas_embargos";
+$query_soma_custas_embargos = "SELECT SUM(valor_custas) AS total_custas_embargos FROM $tabela_modulo_custas_embargos WHERE id_processo = $id_processo";
 $res_soma_custas_embargos = $pdo->prepare($query_soma_custas_embargos);
 $res_soma_custas_embargos->execute();
 $row_total_custas_embargos=$res_soma_custas_embargos->fetch(PDO::FETCH_ASSOC);
@@ -547,7 +592,7 @@ $total_taxa_embargos = $row_total_taxa_embargos['total_taxas_embargos'];
 
 /********************************EXTRAS/DESPESAS**********************************/
 
-$query_soma_custas_despesas_extras = "SELECT SUM(total_extras) AS total_custas_despesas_extras FROM $tabela_modulo_custas_extras";
+$query_soma_custas_despesas_extras = "SELECT SUM(total_extras) AS total_custas_despesas_extras FROM $tabela_modulo_custas_extras WHERE id_processo = $id_processo";
 $res_soma_custas_despesas_extras = $pdo->prepare($query_soma_custas_despesas_extras);
 $res_soma_custas_despesas_extras->execute();
 $row_total_custas_despesas_extras=$res_soma_custas_despesas_extras->fetch(PDO::FETCH_ASSOC);
@@ -564,6 +609,20 @@ $total_taxa = number_format(floatval($total_taxa_calculadas_pagas)+floatval($tot
 $total_custas_depesas_extras = number_format(floatval($total_custas_despesas_extras), 2, ',', '.');
 
 $total_custas_taxas_depesas_extras = number_format(floatval($total_custas_calculadas_pagas)+floatval($total_custas_devidas)+floatval($total_custas_embargos)+floatval($total_taxa_calculadas_pagas)+floatval($total_taxa_devida)+floatval($total_taxa_embargos)+floatval($total_custas_despesas_extras), 2, ',', '.');
+
+if($total_custas < 0 || $total_taxa < 0 || $total_custas_depesas_extras < 0 || $total_custas_taxas_depesas_extras < 0 ){
+
+    $total_custas = 0;
+    $total_taxa = 0;
+    $total_custas_depesas_extras = 0;
+    $total_custas_taxas_depesas_extras = 0;
+
+}
+/********************************************************************************/
+
+
+
+
 
 /********************************************************************************/
 
@@ -586,16 +645,17 @@ echo <<<HTML
     <tbody>
 
 HTML;
-   
+    
+       
 
 echo <<<HTML
 
 <tr>
 
-<td>{$total_custas}</td>
-<td>{$total_taxa}</td>
-<td>{$total_custas_depesas_extras}</td>
-<td>{$total_custas_taxas_depesas_extras}</td>
+<td id="total_custas">{$total_custas}</td>
+<td id="total_taxa">{$total_taxa}</td>
+<td id="total_custas_depesas_extras">{$total_custas_depesas_extras}</td>
+<td id="total_custas_taxas_depesas_extras">{$total_custas_taxas_depesas_extras}</td>
    
 </tr>
 
@@ -616,22 +676,15 @@ HTML;
 echo <<<HTML
 
 <small><div align = "center" style='margin-top: 50px;' id="contadoria">CONTADORIA</div></small>
-<div align = "center">$data_hoje</div>
-
-<div align = "right">
-
-</div>
+<div align = "center" id="data_totalizacao">$data_hoje</div>
 
 HTML;
-
 
 
 ?>
 
 
-
-
 </body>
 
-</div>
+
 </html>

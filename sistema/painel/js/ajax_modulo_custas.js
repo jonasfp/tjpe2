@@ -294,6 +294,35 @@ $("#formCustasExtras").submit(function (event) {
 });
 
 
+// Listar relatorio e custas
+
+$("#formRelatorio").submit(function (event) {
+
+event.preventDefault()
+
+if ($('#select').val()!= 0 && $('#processo').val() =='') {
+
+relatorioCustas()
+
+} else if($('#processo').val()!='' && $('#select').val() == 0 ) {
+
+relatorioCustas2()
+
+
+} else if ($('#processo').val() =='' && $('#select').val() == 0 ) {
+
+ relatorioPorDatas()
+
+} else {
+
+
+    alert("Escolha apenas uma opção na pesquisa!")
+
+}
+
+});
+
+
 function listar(){
 
     $.ajax({
@@ -311,3 +340,78 @@ function listar(){
        
     });
 }
+
+
+// Função que pega o valor do select e passa via post para a pagina relatorio_custas.php
+
+function relatorioCustas(){
+
+    var selected_item = $('#select').val()
+    var selected_select = $('#select').find("option[value='"+selected_item+"']").text()
+
+        
+    $.ajax({
+                       
+        url:'paginas/modulo_custas_lista/relatorio_custas.php',
+        method:'POST',
+        data:{select: selected_select},
+                
+        success:function(result){
+
+            $("#relatorio-custas").html(result);
+            $('#mensagem-excluir').text('');
+        }
+               
+                 
+    });
+}
+
+function relatorioCustas2(){
+
+    var selected_processo = $('#processo').val()
+
+    $.ajax({
+                       
+        url:'paginas/modulo_custas_lista/relatorio_custas.php',
+        method:'POST',
+        data:{processo: selected_processo},
+
+                
+        success:function(result){
+
+            $("#relatorio-custas").html(result);
+            $('#mensagem-excluir').text('');
+        }
+               
+                 
+    });
+}
+
+function relatorioPorDatas(){
+
+    var datestart =$('#datestart').datepicker().val()
+
+    var dateend =$('#dateend').datepicker().val()
+
+    $.ajax({
+                       
+        url:'paginas/modulo_custas_lista/relatorio_custas.php',
+        method:'POST',
+        data:{
+            datestart: datestart,
+            dateend:dateend
+        },
+                
+        success:function(result){
+
+            $("#relatorio-custas").html(result);
+            $('#mensagem-excluir').text('');
+        }
+               
+                 
+    });
+
+
+
+}
+

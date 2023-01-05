@@ -1,6 +1,6 @@
 <?php 
 
-include('../../conexao.php');
+include('../../util/conexao.php');
 
 
 //ALIMENTAR OS DADOS NO RELATÓRIO

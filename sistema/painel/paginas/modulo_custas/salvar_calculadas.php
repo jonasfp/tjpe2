@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 $tabela = 'modulo_custas_calculadas';
 $tipo=$_POST['selecttipocustas'];
 $dataevento=$_POST['dataeventocustascalculadas'];
@@ -15,6 +15,24 @@ $valor_custas_atualizadas=$_POST['custasprocessuaisatualizadas'];
 $valor_taxa_atualizada=$_POST['taxajudiciariaatualizada'];
 $total_custas_taxa=$_POST['totalcustascalculadasatualizadas'];
 $id_processo_calculadas = $_SESSION['id_processo'];
+
+if($tipo == "Pagas"){
+
+$valor_custas = $valor_custas * (-1);
+$valor_taxa = $valor_taxa * (-1);
+$valor_custas_atualizadas = $valor_custas_atualizadas * (-1);
+$valor_taxa_atualizada = $valor_taxa_atualizada * (-1); 
+$total_custas_taxa = $total_custas_taxa * (-1);
+    
+} else {
+
+$valor_custas = $valor_custas;
+$valor_taxa = $valor_taxa;
+$valor_custas_atualizadas = $valor_custas_atualizadas;
+$valor_taxa_atualizada = $valor_taxa_atualizada; 
+$total_custas_taxa = $total_custas_taxa;
+
+}
 
 $query = $pdo->prepare("INSERT INTO $tabela SET tipo =:tipo, dataevento = :dataevento,historico =:historico, valor_custas = :valor_custas, valor_taxa =:valor_taxa, valor_custas_atualizadas = :valor_custas_atualizadas, valor_taxa_atualizada =:valor_taxa_atualizada, total_custas_taxa = :total_custas_taxa,id_processo=:id_processo");
 

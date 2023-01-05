@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 $tabela = 'modulo_custas_parametros';
 $tabelaprocessos = 'modulo_custas_parametros';
 $indice_correcao_id=$_POST['selectindicecorrecao'];

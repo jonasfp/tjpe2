@@ -2,7 +2,7 @@
 
 @session_start();
 require_once('verificar.php');
-require_once('../conexao.php');
+require_once('../util/conexao.php');
 
 $pag2 = 'modulo_custas_lista';
 

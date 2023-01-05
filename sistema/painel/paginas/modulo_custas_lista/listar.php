@@ -1,6 +1,12 @@
+
+<!DOCTYPE html>
+<html>
+<div div class = "bs-example widget-shadow" style="padding: 20px">
+<body>
+
 <?php
 session_start();
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 $tabelaprocesso = 'modulo_custas_processo';
 $tabelavara = 'vara';
 $tabelaindicescorrecao = 'indices_correcao';
@@ -29,7 +35,7 @@ echo <<<HTML
 
 HTML;    
 
-$query = $pdo->query("SELECT P.id, P.processo, V.nome, P.devedores FROM $tabelaprocesso P INNER JOIN $tabelavara V ON P.varaid=V.id WHERE p.id = $id_processo");
+$query = $pdo->query("SELECT P.id, P.processo, V.nome, P.devedores FROM $tabelaprocesso P INNER JOIN $tabelavara V ON P.varaid=V.id WHERE P.id = $id_processo");
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
@@ -37,9 +43,9 @@ $total_reg = @count($res);
 
 if($total_reg>0){
 
-$tabela = $tabelaprocesso;
+    $tabela = $tabelaprocesso;
 
-echo <<<HTML
+    echo <<<HTML
 
     <table class="table table-hover" id="modulo_custas_processo" >
     <thead>
@@ -51,30 +57,30 @@ echo <<<HTML
     </tr>
     </thead>
     <tbody>
-HTML;
+    HTML;
 
-for($i=0; $i<$total_reg;$i++){
-    
-    foreach ($res[$i] as $key => $value) {
-        $id = $res[$i]['id'];
-        $processo = $res[$i]['processo'];        
-        $varaid = $res[$i]['nome'];
-        $devedores = $res[$i]['devedores'];
-            
-    }
+    for($i=0; $i<$total_reg;$i++){
 
-echo <<<HTML
+        foreach ($res[$i] as $key => $value) {
+            $id = $res[$i]['id'];
+            $processo = $res[$i]['processo'];        
+            $varaid = $res[$i]['nome'];
+            $devedores = $res[$i]['devedores'];
 
-<tr>
+        }
 
- <td>{$processo}</td>
- <td>{$varaid}</td>
- <td>{$devedores}</td>
+        echo <<<HTML
 
- <td style="text-align: right;">
+        <tr>
+
+        <td id="processo">{$processo}</td>
+        <td id="vara">{$varaid}</td>
+        <td>{$devedores}</td>
+
+        <td style="text-align: right;">
 
         <big><a href="#" onclick="editar()" title="Editar Dados"><i class="fa fa-edit text-primary"></i></a></big>
-       
+
         <li class="dropdown head-dpdn2" style="display: inline-block;">
 
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
@@ -98,36 +104,38 @@ echo <<<HTML
 
         </td>
 
-</tr>
+        </tr>
 
-HTML;
+        HTML;
 
-}
+    }
 
-echo <<<HTML
+    echo <<<HTML
 
-</tbody>
+    </tbody>
 
-<small><div align = "center" id="mensagem-excluir"></div></small>
-</table>
+    <small><div align = "center" id="mensagem-excluir"></div></small>
+    </table>
 
-HTML;
+    HTML;
 
 } 
 
 else {
 
-    //echo 'Não possui registro cadastrado!';
+//echo 'Não possui registro cadastrado!';
 }
 
-$query = $pdo->query("SELECT I.id, I.nomeindice, P.datafinal_correcao, P.id_processo  FROM $tabela_modulo_custas_parametros P INNER JOIN $tabelaindicescorrecao I ON P.indice_correcao_id = I.id WHERE P.id_processo = $id_processo");
+$query = $pdo->query("SELECT I.id, P.id, I.nomeindice, P.datafinal_correcao, P.id_processo FROM $tabela_modulo_custas_parametros P INNER JOIN $tabelaindicescorrecao I ON P.indice_correcao_id = I.id WHERE P.id_processo = $id_processo");
 
 $res = $query->fetchAll(PDO::FETCH_ASSOC);
 $total_reg = @count($res);
 
 if($total_reg>0){
 
-echo <<<HTML
+    $tabela = $tabela_modulo_custas_parametros;
+
+    echo <<<HTML
 
     <table class="table table-hover" id="modulo_custas_parametros">
     <thead>
@@ -139,51 +147,70 @@ echo <<<HTML
     </thead>
     <tbody>
 
-HTML;
+    HTML;
 
-for($i=0; $i<$total_reg;$i++){
-    foreach ($res[$i] as $key => $value) {
-        $id = $res[$i]['id'];        
-        $indice_correcao_id = $res[$i]['nomeindice'];
-        $datafinal_correcao = $res[$i]['datafinal_correcao'];
-              
+    for($i=0; $i<$total_reg;$i++){
+        foreach ($res[$i] as $key => $value) {
+            $id = $res[$i]['id'];        
+            $nomeindice = $res[$i]['nomeindice'];
+            $datafinal_correcao = $res[$i]['datafinal_correcao'];
+
+        }
+
+        $datafinal_correcaoF = date('m/Y', strtotime($datafinal_correcao));
+
+
+        echo <<<HTML
+
+        <tr>
+        <td>{$nomeindice}</td>
+        <td>{$datafinal_correcaoF}</td>
+        <td style="text-align: right;"> 
+
+
+        <li class="dropdown head-dpdn2" style="display: inline-block;">
+
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
+
+        <ul class="dropdown-menu" style="margin-left:-230px;">
+
+        <li>
+
+        <div class="notification_desc2">
+
+
+        <p>Confirmar Exclusão? <a href="#" onclick="excluir('{$id}','{$tabela}')"><span class="text-danger">Sim</span></a></p>
+        </div>
+
+        </li>
+
+        </ul>
+
+        </li>       
+
+
+        </td>      
+
+        </tr>
+
+        HTML;
+
     }
 
-$datafinal_correcaoF = date('m/Y', strtotime($datafinal_correcao));
+    echo <<<HTML
 
+    </tbody>
 
-echo <<<HTML
+    <small><div align = "center" id="mensagem-excluir"></div></small>
+    </table>
 
-<tr>
- <td>{$indice_correcao_id}</td>
- <td>{$datafinal_correcaoF}</td>
-
- <td style="text-align: right;">
-        
-        
-
-        </td>
- 
-</tr>
-
-HTML;
-
-}
-
-echo <<<HTML
-
-</tbody>
-
-<small><div align = "center" id="mensagem-excluir"></div></small>
-</table>
-
-HTML;
+    HTML;
 
 } 
 
 else {
 
-    //echo 'Não possui registro cadastrado!';
+//echo 'Não possui registro cadastrado!';
 }
 
 $query = $pdo->query("SELECT * FROM $tabela_modulo_custas_calculadas WHERE id_processo = $id_processo ORDER BY dataevento asc");
@@ -192,11 +219,11 @@ $total_reg = @count($res);
 
 if($total_reg>0){
 
-$tabela = $tabela_modulo_custas_calculadas;
+    $tabela = $tabela_modulo_custas_calculadas;
 
-echo <<<HTML
+    echo <<<HTML
 
-<div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>CALCULADAS/PAGAS</h5></div> 
+    <div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>CALCULADAS/PAGAS</h5></div> 
 
     <table class="table table-hover" id="modulo_custas_calculadas">
     <thead>
@@ -214,44 +241,80 @@ echo <<<HTML
     </thead>
     <tbody>
 
-HTML;
+    HTML;
 
-for($i=0; $i<$total_reg;$i++){
-    foreach ($res[$i] as $key => $value) {
-        $id = $res[$i]['id'];             
-        $tipo = $res[$i]['tipo'];
-        $dataevento = $res[$i]['dataevento'];
-        $historico = $res[$i]['historico'];
-        $valor_custas = $res[$i]['valor_custas'];
-        $valor_taxa = $res[$i]['valor_taxa'];
-        $valor_custas_atualizadas = $res[$i]['valor_custas_atualizadas'];        
-        $valor_taxa_atualizada = $res[$i]['valor_taxa_atualizada'];        
-        $total_custas_taxa = $res[$i]['total_custas_taxa'];        
-    }
+    for($i=0; $i<$total_reg;$i++){
+        foreach ($res[$i] as $key => $value) {
+            $id = $res[$i]['id'];             
+            $tipo = $res[$i]['tipo'];
+            $dataevento = $res[$i]['dataevento'];
+            $historico = $res[$i]['historico'];
+            $valor_custas = $res[$i]['valor_custas'];
+            $valor_taxa = $res[$i]['valor_taxa'];
+            $valor_custas_atualizadas = $res[$i]['valor_custas_atualizadas'];        
+            $valor_taxa_atualizada = $res[$i]['valor_taxa_atualizada'];        
+            $total_custas_taxa = $res[$i]['total_custas_taxa'];        
+        }
 
-    $valor_custasF = number_format($valor_custas, 2, ',', '.');
-    $valor_taxaF = number_format($valor_taxa, 2, ',', '.');
-    $valor_custas_atualizadasF = number_format($valor_custas_atualizadas, 2, ',', '.');
-    $valor_taxa_atualizadaF = number_format($valor_taxa_atualizada, 2, ',', '.');
-    $total_custas_taxaF = number_format($total_custas_taxa, 2, ',', '.');
-    $dataeventoF = date('m/Y', strtotime($dataevento));
+        if($tipo == "Pagas"){
 
 
-echo <<<HTML
+            $valor_custas = $valor_custas * (-1); 
+            $valor_taxa = $valor_taxa * (-1);
+            $valor_custas_atualizadas = $valor_custas_atualizadas * (-1); 
+            $valor_taxa_atualizada =   $valor_taxa_atualizada * (-1);
+            $total_custas_taxa = $total_custas_taxa * (-1);
 
-<tr>
+            $valor_custasPagasF = number_format($valor_custas, 2, ',', '.');
+            $valor_taxaPagasF = number_format($valor_taxa, 2, ',', '.');
+            $valor_custas_atualizadasPagasF = number_format($valor_custas_atualizadas, 2, ',', '.');
+            $valor_taxa_atualizadaPagasF = number_format($valor_taxa_atualizada, 2, ',', '.');
+            $total_custas_taxaPagasF = number_format($total_custas_taxa, 2, ',', '.');
 
- <td>{$tipo}</td>
- <td>{$dataeventoF}</td>
- <td>{$historico}</td>
- <td>{$valor_custasF}</td> 
- <td>{$valor_taxaF}</td> 
- <td>{$valor_custas_atualizadasF}</td> 
- <td>{$valor_taxa_atualizadaF}</td> 
- <td>{$total_custas_taxaF}</td>
 
- <td style="text-align: right;">
-       
+            $valor_custasF = '('.$valor_custasPagasF.')';
+            $valor_taxaF = '('.$valor_taxaPagasF.')';
+            $valor_custas_atualizadasF = '('.$valor_custas_atualizadasPagasF.')';
+            $valor_taxa_atualizadaF = '('.$valor_taxa_atualizadaPagasF.')';
+            $total_custas_taxaF = '('.$total_custas_taxaPagasF.')';
+
+            $dataeventoF = date('m/Y', strtotime($dataevento));
+
+        } else {
+
+            $valor_custas = $valor_custas; 
+            $valor_taxa = $valor_taxa;
+            $valor_custas_atualizadas = $valor_custas_atualizadas; 
+            $valor_taxa_atualizada = $valor_taxa_atualizada;
+            $total_custas_taxa = $total_custas_taxa;
+
+            $valor_custasF = number_format($valor_custas, 2, ',', '.');
+            $valor_taxaF = number_format($valor_taxa, 2, ',', '.');
+            $valor_custas_atualizadasF = number_format($valor_custas_atualizadas, 2, ',', '.');
+            $valor_taxa_atualizadaF = number_format($valor_taxa_atualizada, 2, ',', '.');
+            $total_custas_taxaF = number_format($total_custas_taxa, 2, ',', '.');
+            $dataeventoF = date('m/Y', strtotime($dataevento)); 
+
+        }
+
+
+
+
+        echo <<<HTML
+
+        <tr>
+
+        <td>{$tipo}</td>
+        <td>{$dataeventoF}</td>
+        <td>{$historico}</td>
+        <td>{$valor_custasF}</td> 
+        <td>{$valor_taxaF}</td> 
+        <td>{$valor_custas_atualizadasF}</td> 
+        <td>{$valor_taxa_atualizadaF}</td> 
+        <td>{$total_custas_taxaF}</td>
+
+        <td style="text-align: right;">
+
         <li class="dropdown head-dpdn2" style="display: inline-block;">
 
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
@@ -274,26 +337,26 @@ echo <<<HTML
 
         </td>
 
-</tr>
+        </tr>
 
-HTML;
+        HTML;
 
-}
+    }
 
-echo <<<HTML
+    echo <<<HTML
 
-</tbody>
+    </tbody>
 
-<small><div align = "center" id="mensagem-excluir"></div></small>
-</table>
+    <small><div align = "center" id="mensagem-excluir"></div></small>
+    </table>
 
-HTML;
+    HTML;
 
 } 
 
 else {
 
-    //echo 'Não possui registro cadastrado!';
+//echo 'Não possui registro cadastrado!';
 }
 
 $query = $pdo->query("SELECT * FROM $tabela_modulo_custas_custas_taxa WHERE id_processo = $id_processo ORDER BY dataevento asc ");
@@ -302,12 +365,12 @@ $total_reg = @count($res);
 
 if($total_reg>0){
 
-$tabela = $tabela_modulo_custas_custas_taxa; 
+    $tabela = $tabela_modulo_custas_custas_taxa; 
 
 
-echo <<<HTML
+    echo <<<HTML
 
-<div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>DEVIDAS</h5></div> 
+    <div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>DEVIDAS</h5></div> 
 
     <table class="table table-hover" id="modulo_custas_custas_taxa">
     <thead>
@@ -324,42 +387,42 @@ echo <<<HTML
     </thead>
     <tbody>
 
-HTML;
+    HTML;
 
-for($i=0; $i<$total_reg;$i++){
-    foreach ($res[$i] as $key => $value) {
-        $id = $res[$i]['id'];        
-        $tipo = $res[$i]['tipo'];
-        $dataevento = $res[$i]['dataevento'];
-        $historico = $res[$i]['historico'];
-        $valor_causa = $res[$i]['valor_causa'];
-        $valor_custas = $res[$i]['valor_custas'];
-        $valor_taxa = $res[$i]['valor_taxa'];        
-        $total_custas_taxa = $res[$i]['total_custas_taxa'];      
-           
-    }
+    for($i=0; $i<$total_reg;$i++){
+        foreach ($res[$i] as $key => $value) {
+            $id = $res[$i]['id'];        
+            $tipo = $res[$i]['tipo'];
+            $dataevento = $res[$i]['dataevento'];
+            $historico = $res[$i]['historico'];
+            $valor_causa = $res[$i]['valor_causa'];
+            $valor_custas = $res[$i]['valor_custas'];
+            $valor_taxa = $res[$i]['valor_taxa'];        
+            $total_custas_taxa = $res[$i]['total_custas_taxa'];      
 
-    $dataeventoF = date('m/Y', strtotime($dataevento));
-    $valor_causaF = number_format($valor_causa, 2, ',', '.');
-    $valor_custasF = number_format($valor_custas, 2, ',', '.');
-    $valor_taxaF = number_format($valor_taxa, 2, ',', '.');
-    $total_custas_taxaF = number_format($total_custas_taxa, 2, ',', '.');
-    
+        }
 
-echo <<<HTML
+        $dataeventoF = date('m/Y', strtotime($dataevento));
+        $valor_causaF = number_format($valor_causa, 2, ',', '.');
+        $valor_custasF = number_format($valor_custas, 2, ',', '.');
+        $valor_taxaF = number_format($valor_taxa, 2, ',', '.');
+        $total_custas_taxaF = number_format($total_custas_taxa, 2, ',', '.');
 
-<tr>
 
- <td>{$tipo}</td>
- <td>{$dataeventoF}</td>
- <td>{$historico}</td>
- <td>{$valor_causaF}</td> 
- <td>{$valor_custasF}</td> 
- <td>{$valor_taxaF}</td> 
- <td>{$total_custas_taxaF}</td>
+        echo <<<HTML
 
- <td style="text-align: right;">
-        
+        <tr>
+
+        <td>{$tipo}</td>
+        <td>{$dataeventoF}</td>
+        <td>{$historico}</td>
+        <td>{$valor_causaF}</td> 
+        <td>{$valor_custasF}</td> 
+        <td>{$valor_taxaF}</td> 
+        <td>{$total_custas_taxaF}</td>
+
+        <td style="text-align: right;">
+
         <li class="dropdown head-dpdn2" style="display: inline-block;">
 
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
@@ -381,27 +444,27 @@ echo <<<HTML
 
 
         </td> 
- 
-</tr>
 
-HTML;
+        </tr>
 
-}
+        HTML;
 
-echo <<<HTML
+    }
 
-</tbody>
+    echo <<<HTML
 
-<small><div align = "center" id="mensagem-excluir"></div></small>
-</table>
+    </tbody>
 
-HTML;
+    <small><div align = "center" id="mensagem-excluir"></div></small>
+    </table>
+
+    HTML;
 
 } 
 
 else {
 
-    //echo 'Não possui registro cadastrado!';
+//echo 'Não possui registro cadastrado!';
 }
 
 $query = $pdo->query("SELECT * FROM $tabela_modulo_custas_embargos WHERE id_processo = $id_processo ORDER BY dataevento asc");
@@ -410,11 +473,11 @@ $total_reg = @count($res);
 
 if($total_reg>0){
 
-$tabela = $tabela_modulo_custas_embargos; 
+    $tabela = $tabela_modulo_custas_embargos; 
 
-echo <<<HTML
+    echo <<<HTML
 
-<div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>EMBARGOS</h5></div> 
+    <div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>EMBARGOS</h5></div> 
 
     <table class="table table-hover" id="modulo_custas_embargos">
     <thead>
@@ -432,43 +495,43 @@ echo <<<HTML
     </thead>
     <tbody>
 
-HTML;
+    HTML;
 
-for($i=0; $i<$total_reg;$i++){
-    foreach ($res[$i] as $key => $value) {
-        $id = $res[$i]['id'];        
-        $tipo = $res[$i]['tipo'];
-        $dataevento = $res[$i]['dataevento'];
-        $historico = $res[$i]['historico'];
-        $valor_execucao = $res[$i]['valor_execucao'];
-        $tipopercentual = $res[$i]['tipopercentual'];
-        $valor_custas = $res[$i]['valor_custas'];        
-        $valor_taxas = $res[$i]['valor_taxas'];        
-        $valor_total = $res[$i]['valor_total'];        
-    }
+    for($i=0; $i<$total_reg;$i++){
+        foreach ($res[$i] as $key => $value) {
+            $id = $res[$i]['id'];        
+            $tipo = $res[$i]['tipo'];
+            $dataevento = $res[$i]['dataevento'];
+            $historico = $res[$i]['historico'];
+            $valor_execucao = $res[$i]['valor_execucao'];
+            $tipopercentual = $res[$i]['tipopercentual'];
+            $valor_custas = $res[$i]['valor_custas'];        
+            $valor_taxas = $res[$i]['valor_taxas'];        
+            $valor_total = $res[$i]['valor_total'];        
+        }
 
-    $valor_execucaoF = number_format($valor_execucao, 2, ',', '.');
-    $valor_custasF = number_format($valor_custas, 2, ',', '.');
-    $valor_taxaF = number_format($valor_taxas, 2, ',', '.');
-    $valor_totalF = number_format($valor_total, 2, ',', '.');
-    $dataeventoF = date('m/Y', strtotime($dataevento));
+        $valor_execucaoF = number_format($valor_execucao, 2, ',', '.');
+        $valor_custasF = number_format($valor_custas, 2, ',', '.');
+        $valor_taxaF = number_format($valor_taxas, 2, ',', '.');
+        $valor_totalF = number_format($valor_total, 2, ',', '.');
+        $dataeventoF = date('m/Y', strtotime($dataevento));
 
 
-echo <<<HTML
+        echo <<<HTML
 
-<tr>
+        <tr>
 
- <td>{$tipo}</td>
- <td>{$dataeventoF}</td>
- <td>{$historico}</td>
- <td>{$valor_execucaoF}</td>
- <td>{$tipopercentual}</td>
- <td>{$valor_custasF}</td> 
- <td>{$valor_taxaF}</td> 
- <td>{$valor_totalF}</td>
+        <td>{$tipo}</td>
+        <td>{$dataeventoF}</td>
+        <td>{$historico}</td>
+        <td>{$valor_execucaoF}</td>
+        <td>{$tipopercentual}</td>
+        <td>{$valor_custasF}</td> 
+        <td>{$valor_taxaF}</td> 
+        <td>{$valor_totalF}</td>
 
- <td style="text-align: right;">
-       
+        <td style="text-align: right;">
+
         <li class="dropdown head-dpdn2" style="display: inline-block;">
 
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
@@ -491,25 +554,25 @@ echo <<<HTML
 
         </td>
 
-</tr>
+        </tr>
 
-HTML;
+        HTML;
 
-}
+    }
 
-echo <<<HTML
-</tbody>
+    echo <<<HTML
+    </tbody>
 
-<small><div align = "center" id="mensagem-excluir"></div></small>
-</table>
+    <small><div align = "center" id="mensagem-excluir"></div></small>
+    </table>
 
-HTML;
+    HTML;
 
 } 
 
 else {
 
-    //echo 'Não possui registro cadastrado!';
+//echo 'Não possui registro cadastrado!';
 }
 
 $query = $pdo->query("SELECT * FROM $tabela_modulo_custas_extras WHERE id_processo = $id_processo ORDER BY dataevento asc");
@@ -518,12 +581,12 @@ $total_reg = @count($res);
 
 if($total_reg>0){
 
-$tabela = $tabela_modulo_custas_extras;
+    $tabela = $tabela_modulo_custas_extras;
 
 
-echo <<<HTML
+    echo <<<HTML
 
-<div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>EXTRAS/DESPESAS</h5></div>
+    <div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>EXTRAS/DESPESAS</h5></div>
 
     <table class="table table-hover" id="modulo_custas_extras">
 
@@ -538,42 +601,42 @@ echo <<<HTML
     <th style="text-align: right;"></th>       
     </tr>
     </thead>
-    
+
 
     <tbody>
 
-HTML;
+    HTML;
 
-for($i=0; $i<$total_reg;$i++){
-    foreach ($res[$i] as $key => $value) {
-        $id = $res[$i]['id'];        
-        $tipo = $res[$i]['tipo'];
-        $dataevento = $res[$i]['dataevento'];
-        $historico = $res[$i]['historico'];
-        $quantidade = $res[$i]['quantidade'];
-        $valor_unitario = $res[$i]['valor_unitario'];
-        $total_extras = $res[$i]['total_extras'];       
-         
-           
-    }
-    $dataeventoF = date('m/Y', strtotime($dataevento));
-    $valor_unitarioF = number_format($valor_unitario, 2, ',', '.');
-    $total_extrasF = number_format($total_extras, 2, ',', '.');
-    
+    for($i=0; $i<$total_reg;$i++){
+        foreach ($res[$i] as $key => $value) {
+            $id = $res[$i]['id'];        
+            $tipo = $res[$i]['tipo'];
+            $dataevento = $res[$i]['dataevento'];
+            $historico = $res[$i]['historico'];
+            $quantidade = $res[$i]['quantidade'];
+            $valor_unitario = $res[$i]['valor_unitario'];
+            $total_extras = $res[$i]['total_extras'];       
 
-echo <<<HTML
 
-<tr>
+        }
+        $dataeventoF = date('m/Y', strtotime($dataevento));
+        $valor_unitarioF = number_format($valor_unitario, 2, ',', '.');
+        $total_extrasF = number_format($total_extras, 2, ',', '.');
 
- <td>{$tipo}</td>
- <td>{$dataeventoF}</td>
- <td>{$historico}</td>
- <td>{$quantidade}</td>
- <td>{$valor_unitarioF}</td>
- <td>{$total_extrasF}</td>
 
- <td style="text-align: right;">
-      
+        echo <<<HTML
+
+        <tr>
+
+        <td>{$tipo}</td>
+        <td>{$dataeventoF}</td>
+        <td>{$historico}</td>
+        <td>{$quantidade}</td>
+        <td>{$valor_unitarioF}</td>
+        <td>{$total_extrasF}</td>
+
+        <td style="text-align: right;">
+
         <li class="dropdown head-dpdn2" style="display: inline-block;">
 
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><big><i class="fa fa-trash-o text-danger"></i></big></a>
@@ -595,25 +658,25 @@ echo <<<HTML
 
 
         </td> 
- 
-</tr>
 
-HTML;
+        </tr>
 
-}
+        HTML;
 
-echo <<<HTML
+    }
 
-</tbody>
+    echo <<<HTML
 
-<small><div align = "center" id="mensagem-excluir"></div></small>
-</table>
+    </tbody>
 
-HTML;
+    <small><div align = "center" id="mensagem-excluir"></div></small>
+    </table>
+
+    HTML;
 
 } else {
 
-    //echo 'Não possui registro cadastrado!';
+//echo 'Não possui registro cadastrado!';
 }
 
 /*****************************CALCULADAS/PAGAS***********************************/
@@ -680,40 +743,53 @@ $total_custas_depesas_extras = number_format(floatval($total_custas_despesas_ext
 
 $total_custas_taxas_depesas_extras = number_format(floatval($total_custas_calculadas_pagas)+floatval($total_custas_devidas)+floatval($total_custas_embargos)+floatval($total_taxa_calculadas_pagas)+floatval($total_taxa_devida)+floatval($total_taxa_embargos)+floatval($total_custas_despesas_extras), 2, ',', '.');
 
+if($total_custas < 0 || $total_taxa < 0 || $total_custas_depesas_extras < 0 || $total_custas_taxas_depesas_extras < 0 ){
+
+    $total_custas = 0;
+    $total_taxa = 0;
+    $total_custas_depesas_extras = 0;
+    $total_custas_taxas_depesas_extras = 0;
+
+}
+/********************************************************************************/
+
+
+
+
+
 /********************************************************************************/
 
 echo <<<HTML
 
 <div style="text-align: left; font-family:Arial; margin-top: 40px; margin-bottom:20px"><h5>TOTAL</h5></div>
 
-    <table class="table table-hover" id="modulo_total_custas">
+<table class="table table-hover" id="modulo_total_custas">
 
-    <thead>
-    <tr class="active">
-    <th>Total de custas processuais(R$)</th>
-    <th>Total de taxa judiciária(R$)</th>
-    <th>Total custas/despesas extras(R$)</th>
-    <th>Valor total devido(R$)</th>
-     
-    </tr>
-    </thead>
-    
-    <tbody>
+<thead>
+<tr class="active">
+<th>Total de custas processuais(R$)</th>
+<th>Total de taxa judiciária(R$)</th>
+<th>Total custas/despesas extras(R$)</th>
+<th>Valor total devido(R$)</th>
+
+</tr>
+</thead>
+
+<tbody>
 
 HTML;
-    
-   
-      
+
+
 
 echo <<<HTML
 
 <tr>
 
-<td>{$total_custas}</td>
-<td>{$total_taxa}</td>
-<td>{$total_custas_depesas_extras}</td>
-<td>{$total_custas_taxas_depesas_extras}</td>
-   
+<td id="total_custas">{$total_custas}</td>
+<td id="total_taxa">{$total_taxa}</td>
+<td id="total_custas_depesas_extras">{$total_custas_depesas_extras}</td>
+<td id="total_custas_taxas_depesas_extras">{$total_custas_taxas_depesas_extras}</td>
+
 </tr>
 
 HTML;
@@ -733,14 +809,94 @@ HTML;
 echo <<<HTML
 
 <small><div align = "center" style='margin-top: 50px;' id="contadoria">CONTADORIA</div></small>
-<div align = "center">$data_hoje</div>
+<div align = "center" id="data_totalizacao">$data_hoje</div>
 
 <div align = "right">
 
-<a href="../rel/modulo_custas.php" target="_blank"><button id="salvartudo" class="btn btn-primary">Imprimir</button></a>
+<!--
+
+<a href="../rel/modulo_custas.php" target="_blank" onclick="salvarTotalizacao('{$tabelaprocesso}','{$processo}','{$varaid}','{$total_custas}','{$total_taxa}','{$total_custas_depesas_extras}','{$total_custas_taxas_depesas_extras}')"><button id="salvartudo" class="btn btn-primary">Imprimir</button></a> -->
+
+
+<a href="../rel/modulo_custas.php" target="_blank" id="imprimir"><button class="btn btn-primary">Imprimir</button></a>
+
+
+
+<button id="salvartudo" class="btn btn-primary" onclick="salvarTotalizacao('{$tabelaprocesso}','{$processo}','{$varaid}','{$total_custas}','{$total_taxa}','{$total_custas_depesas_extras}','{$total_custas_taxas_depesas_extras}')">Salvar</button>
 
 </div>
 
 HTML;
 
 ?>
+
+
+</body>
+</div>
+</html>
+
+<script>
+
+    //Bloqueia o menu suspenso ao clicar com o botão direito do mouse
+
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+
+    });
+
+    //Bloqueia o CTRL+P
+
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === 'p') {
+            event.preventDefault();
+        }
+    });
+
+    $('#imprimir').click(function(event) {
+        event.preventDefault();
+    });
+
+</script>
+
+
+
+<script>
+
+    //Função para salvar a totalização no banco de dados
+
+    function salvarTotalizacao(tabela,processo,vara,total_custas,total_taxa,total_custas_depesas_extras,total_custas_taxas_depesas_extras){
+
+        event.preventDefault()
+
+        $.ajax({
+            url: 'paginas/modulo_custas/salvar_totalizacao.php',
+            method: 'POST',
+            data: {tabela,processo,vara,total_custas,total_taxa,total_custas_depesas_extras,total_custas_taxas_depesas_extras},
+            dataType: "text",
+
+            success: function (mensagem) {
+
+                $('#mensagem').text('');
+                $('#mensagem').removeClass()
+                if (mensagem.trim() == "Salvo com Sucesso") {
+
+                    $('#imprimir').unbind('click');                     
+
+                }
+
+                else {
+
+                    $('#mensagem').addClass('text-danger')
+                    $('#mensagem').text(mensagem)
+                } 
+
+
+            },      
+
+        });
+
+
+    }
+
+
+</script>

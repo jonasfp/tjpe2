@@ -1,5 +1,5 @@
 <?php 
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 $tabela = 'usuarios';
 
 $query = $pdo->query("SELECT * FROM $tabela ORDER BY id desc");

@@ -2,7 +2,7 @@
 
 @session_start();
 require_once('verificar.php');
-require_once('../conexao.php');
+require_once('../util/conexao.php');
 
  ?>
 
@@ -20,8 +20,7 @@ require_once('../conexao.php');
             <div class="col-sm-8"> <select name="selector1" id="selector1" class="form-control1">
 
                 <option>Atos</option>
-                <option>Instruções</option>
-                <option>Planilhas</option>
+                <option>Instruções</option>                
                 <option>Certidões</option>
 
             </select> </div>

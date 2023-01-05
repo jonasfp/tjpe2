@@ -1,7 +1,7 @@
 <?php 
 
 
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 
 $tabelamultacondenacao = 'multa_condenacao';
 

@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 $tabela = 'modulo_custas_custas_taxa';
 $tipo=$_POST['selectcustastaxa'];
 $dataevento=$_POST['dataeventocustastaxa'];

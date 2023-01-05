@@ -2,7 +2,7 @@
 
 @session_start();
 require_once('verificar.php');
-require_once('../conexao.php');
+require_once('../util/conexao.php');
 
 ?>
 
@@ -14,15 +14,44 @@ require_once('../conexao.php');
 <h4 style="text-align:center">COMARCAS</h4>
 </div>
 
+<div class="">
+
+    <form class="form-horizontal">                            
+
+        <div class="form-group">
+
+            <label for="selector1" class="col-sm-2 control-label">Selecione a comarca:</label>
+
+            <div class="col-sm-8"> <select name="selector1" id="selector1" class="form-control1">
+
+                <option>Recife</option>
+                <option>Jaboatão dos Guararapes</option>                
+                <option>Olinda</option>
+                <option>Caruaru</option>
+                <option>...</option>
+
+            </select> </div>
+
+            <div class="form-group"> <button type="submit" class="btn btn-default">Pesquisar</button> </div>
+
+        </div>
+
+        
+        
+
+    </form>
+
+</div>
+
 <div class="main-page">
 
 	<div class="col_3">
 
-		<a href="index.php?pag=home_abreu_lima">
+		<a href="index.php?pag=dashboard_recife">
 			<div class="col-md-3 widget widget1">
 				<div class="r3_counter_box">
 					<i class="pull-left fa fa-users icon-rounded"></i>
-					<div align="left" style="margin-top: 10px ;"><span>Abreu e Lima</span></div>
+					<div align="left" style="margin-top: 10px ;"><span>Recife</span></div>
 				</div>
 			</div>
 		</a>
@@ -1008,11 +1037,11 @@ require_once('../conexao.php');
 
 	<div class="col_3" style="margin-top: 20px ;">
 
-		<a href="index.php?pag=home_recife">
+		<a href="index.php?pag=home">
 			<div class="col-md-3 widget widget1">
 				<div class="r3_counter_box">
 					<i class="pull-left fa fa-users icon-rounded"></i>
-					<div align="left" ><span>Recife</span></div>
+					<div align="left" ><span>Abreu e Lima</span></div>
 				</div>
 			</div>
 		</a>

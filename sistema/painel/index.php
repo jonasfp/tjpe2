@@ -1,7 +1,8 @@
         <?php
+
         @session_start();
         require_once("verificar.php");
-        require_once("../conexao.php");
+        require_once("../util/conexao.php");
         $id_usuario = $_SESSION['id'];
 
         $query = $pdo->query("SELECT * from usuarios where id = '$id_usuario'");
@@ -18,17 +19,21 @@
 
         if(@$_GET['pag']==''){
 
-          $pag = 'home';  
-      }
-      else {
+          $pag = 'home';
+
+      } else {
 
         $pag = $_GET['pag'];
 
     }       
 
-    ?>     
+    ?>
+
+
     <!DOCTYPE HTML>
     <html class="js" style="overflow: hidden;">
+
+
     <head>
         <title>Cálculos Judiciais - TJPE</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -74,7 +79,7 @@
               height: 295px;
           }
       </style>
-      <!--pie-chart --><!-- index page sales reviews visitors pie chart -->
+
       <script src="js/pie-chart.js" type="text/javascript"></script>
       <script type="text/javascript">
 
@@ -113,10 +118,11 @@
         });
 
     </script>
-    <!-- //pie-chart --><!-- index page sales reviews visitors pie chart -->
 
 
 </head> 
+
+
 <body class="cbp-spmenu-push">
     <div class="main-content">
         <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"  id="cbp-spmenu-s1">
@@ -141,88 +147,87 @@
                         </a>
                     </li>
                     <li class="treeview">
-                       <a href="index.php?pag=lista_usuario">
-                            <i class="fa fa-users"></i>
-                            <span>Servidores</span>                        
-                        </a>
-                    </li>            
-
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-edit"></i> <span>Cálculos</span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                          <li><a href="index.php?pag=varas_civeis"><i class="fa fa-angle-right"></i>Cíveis</a></li>
-                          <li><a href="index.php?pag=varas_sucessoes"><i class="fa fa-angle-right"></i>Sucessões</a></li>
-                          <li><a href="index.php?pag=varas_familia"><i class="fa fa-angle-right"></i>Familia</a></li>
-                          <li><a href="index.php?pag=varas_fazenda"><i class="fa fa-angle-right"></i>Fazenda</a></li>
-                          <li><a href="index.php?pag=varas_criminais"><i class="fa fa-angle-right"></i>Criminais</a></li>
-                          <li><a href="index.php?pag=custas"><i class="fa fa-angle-right"></i>Custas</a></li>
-                          <li><a href="index.php?pag=adiciona_calculos"><i class="fa fa-angle-right"></i>Adicionar</a></li>
-                      </ul>
-                  </li>
-
-                  <li class="treeview">
-                    <a href="index.php?pag=meus_calculos">
-                        <i class="fa fa-calculator"></i> <span>Meus cálculos</span>
-                        <i class="fa fa-angle-left pull-right"></i>
+                     <a href="index.php?pag=lista_usuario">
+                        <i class="fa fa-users"></i>
+                        <span>Servidores</span>                        
                     </a>
-                    
-              </li>
+                </li>            
 
-                  <li class="treeview">
+                <li class="treeview">
                     <a href="#">
-                        <i class="fa fa-table"></i> <span>Relatórios</span>
+                        <i class="fa fa-edit"></i> <span>Cálculos</span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                      <li><a href="index.php?pag=relatorio_servidores"><i class="fa fa-angle-right"></i>Servidores</a></li>                          
-                      <li><a href="index.php?pag=relatorio_calculos"><i class="fa fa-angle-right"></i>Cálculos</a></li>
+                      <li><a href="index.php?pag=painel_varas_civeis"><i class="fa fa-angle-right"></i>Cíveis</a></li>
+                      <li><a href="index.php?pag=painel_varas_sucessoes"><i class="fa fa-angle-right"></i>Sucessões</a></li>
+                      <li><a href="index.php?pag=painel_varas_familia"><i class="fa fa-angle-right"></i>Familia</a></li>
+                      <li><a href="index.php?pag=painel_varas_fazenda"><i class="fa fa-angle-right"></i>Fazenda</a></li>                      
+                      <li><a href="index.php?pag=painel_custas"><i class="fa fa-angle-right"></i>Custas</a></li>
+                      <li><a href="index.php?pag=pagina_adiciona_calculos"><i class="fa fa-angle-right"></i>Adicionar</a></li>
                   </ul>
               </li>
 
               <li class="treeview">
+                <a href="index.php?pag=pagina_meus_calculos">
+                    <i class="fa fa-calculator"></i> <span>Meus cálculos</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+
+            </li>
+
+            <li class="treeview">
                 <a href="#">
-                   <i class="fa fa-search"></i> <span>Pesquisar</span>
-                   <i class="fa fa-angle-left pull-right"></i>
-               </a>                    
-               <ul class="treeview-menu">
-                  <li><a href="index.php?pag=pesquisa_processos"><i class="fa fa-angle-right"></i> Processos</a></li>                                       
+                    <i class="fa fa-table"></i> <span>Relatórios</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                  <li><a href="index.php?pag=relatorio_servidores"><i class="fa fa-angle-right"></i>Servidores</a></li>                          
+                  <li><a href="index.php?pag=relatorio_calculos"><i class="fa fa-angle-right"></i>Cálculos</a></li>
               </ul>
           </li>
 
           <li class="treeview">
             <a href="#">
-               <i class="fa fa-file"></i> <span>Arquivos</span>
-               <i class="fa fa-angle-left pull-right"></i>
-           </a>                    
-           <ul class="treeview-menu">
-              <li><a href="forms.html"><i class="fa fa-angle-right"></i> Atos </a></li>
-              <li><a href="https://www.tjpe.jus.br/documents/10180/0/-/f8e607be-c5e2-243c-84cf-b66a73c77d65"><i class="fa fa-angle-right"></i> Enunciados </a></li>
-              <li><a href="https://www.gilbertomelo.com.br/pdf/Instrucao_de_Servico_Contadores_DJ185_2011_05_10_2011_TJPE.pdf"><i class="fa fa-angle-right"></i> Instruções </a></li>
-              <li><a href="#"><i class="fa fa-angle-right"></i> Manuais </a></li>
-              <li><a href="index.php?pag=relatorio_servidores"><i class="fa fa-angle-right"></i> Certidões </a></li>
-              <li><a href="index.php?pag=relatorio_servidores"><i class="fa fa-angle-right"></i> Planilhas </a></li>                                                                 
-          </ul>
-      </li>
-
-      <li class="treeview">
-        <a href="#">
-           <i class="fa fa-file"></i> <span>Adicionar</span>
-           <i class="fa fa-angle-left pull-right"></i>
-       </a>                    
-       <ul class="treeview-menu">
-          <li><a href="index.php?pag=adiciona_arquivos"><i class="fa fa-angle-right"></i> Arquivos </a></li>                                                                                                               
+             <i class="fa fa-search"></i> <span>Pesquisar</span>
+             <i class="fa fa-angle-left pull-right"></i>
+         </a>                    
+         <ul class="treeview-menu">
+          <li><a href="index.php?pag=pesquisa_processos"><i class="fa fa-angle-right"></i> Processos</a></li>                                       
       </ul>
   </li>
 
   <li class="treeview">
     <a href="#">
-       <i class="fa fa-link"></i> <span>Links</span>
-       <i class="fa fa-angle-left pull-right"></i>
-   </a>                    
-   <ul class="treeview-menu">
+     <i class="fa fa-file"></i> <span>Arquivos</span>
+     <i class="fa fa-angle-left pull-right"></i>
+ </a>                    
+ <ul class="treeview-menu">
+  <li><a href="https://www.tjpe.jus.br/"><i class="fa fa-angle-right"></i> Atos </a></li>
+  <li><a href="https://www.tjpe.jus.br/documents/10180/0/-/f8e607be-c5e2-243c-84cf-b66a73c77d65"><i class="fa fa-angle-right"></i> Enunciados </a></li>
+  <li><a href="https://www.gilbertomelo.com.br/pdf/Instrucao_de_Servico_Contadores_DJ185_2011_05_10_2011_TJPE.pdf"><i class="fa fa-angle-right"></i> Instruções </a></li>
+  <li><a href="#"><i class="fa fa-angle-right"></i> Manuais </a></li>
+  <li><a href="https://www.tjpe.jus.br"><i class="fa fa-angle-right"></i> Certidões </a></li>
+  <li><a href="https://www.tjpe.jus.br/"><i class="fa fa-angle-right"></i> Planilhas </a></li>                                                                 
+</ul>
+</li>
+
+<li class="treeview">
+    <a href="#">
+     <i class="fa fa-file"></i> <span>Adicionar</span>
+     <i class="fa fa-angle-left pull-right"></i>
+ </a>                    
+ <ul class="treeview-menu">
+  <li><a href="index.php?pag=pagina_adiciona_arquivos"><i class="fa fa-angle-right"></i> Arquivos </a></li>                                                                                                               
+</ul>
+</li>
+
+<li class="treeview">
+    <a href="#">
+     <i class="fa fa-link"></i> <span>Links</span>
+     <i class="fa fa-angle-left pull-right"></i>
+ </a>                    
+ <ul class="treeview-menu">
     <li><a href="https://pje.tjpe.jus.br/1g/login.seam"><i class="fa fa-angle-right"></i> PJE </a></li>
     <li><a href="https://www.tjpe.jus.br/custasjudiciais/xhtml/main.xhtml"><i class="fa fa-angle-right"></i> SICAJUD </a></li>
     <li><a href="https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries"><i class="fa fa-angle-right"></i> Séries Temporais - BCB </a></li>
@@ -230,8 +235,6 @@
     <li><a href="https://www.gilbertomelo.com.br/"><i class="fa fa-angle-right"></i> Tabela ENCOGE </a></li>
     <li><a href="https://www.sefaz.pe.gov.br/Servicos/ICD/Paginas/Perguntas-e-Respostas.aspx/"><i class="fa fa-angle-right"></i> ICD-PE </a></li>
     <li><a href="https://legis.alepe.pe.gov.br/texto.aspx?tiponorma=1&numero=17116&complemento=0&ano=2020&tipo=&url=#:~:text=LEI%20N%C2%BA%2017.116%2C%20DE%204,Judici%C3%A1rio%20do%20Estado%20de%20Pernambuco./"><i class="fa fa-angle-right"></i> Nova lei de custas </a></li>
-
-
 </ul>
 </li>
 
@@ -256,7 +259,7 @@
     </div>
 
     <div class="header-right">                    
-       <div class="profile_details">       
+     <div class="profile_details">       
         <ul>
             <li class="dropdown profile_details_drop">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -287,8 +290,6 @@
 <!-- main content start-->
 
 
-
-
 <div id="page-wrapper">
 
     <?php
@@ -301,9 +302,9 @@
 <!--footer-->
 <div class="footer no-print">
     <small>
-       <p>&copy; Cálculos Judiciais. Todos os direitos reservados | Desenvolvido por Jonas Ferreira da Paixão</a></p>       
-   </div>
-   <!--//footer-->
+     <p>&copy; Cálculos Judiciais. Todos os direitos reservados | Desenvolvido por Jonas Ferreira da Paixão</a></p>       
+ </div>
+ <!--//footer-->
 </div>
 </small>
 
@@ -336,12 +337,12 @@
 <script src="js/scripts.js"></script>
 
 <!--//scrolling js-->
-<!--
-<div id="ascrail2000" class="nicescroll-rails" style="width: 6px;z-index: 1000; background: rgb(66, 79, 99); cursor: default; position: fixed; top: 0px; height: 100%; right: 0px; opacity: 0;">
-    <div style="position: relative; top: 0px; float: right; width: 6px; height: 222px; background-color: rgb(242, 179, 63); border: 0px; background-clip: padding-box; border-radius: 10px;"></div>
-</div>
-    <div id="ascrail2000-hr" class="nicescroll-rails" style="height: 6px; z-index: 1000; background: rgb(66, 79, 99); position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; display: block; opacity: 0;"><div style="position: relative; top: 0px; height: 6px; width: 451px; background-color: rgb(242, 179, 63); border: 0px; background-clip: padding-box; border-radius: 10px; left: 0px;"></div>
-</div>
+    <!--
+    <div id="ascrail2000" class="nicescroll-rails" style="width: 6px;z-index: 1000; background: rgb(66, 79, 99); cursor: default; position: fixed; top: 0px; height: 100%; right: 0px; opacity: 0;">
+        <div style="position: relative; top: 0px; float: right; width: 6px; height: 222px; background-color: rgb(242, 179, 63); border: 0px; background-clip: padding-box; border-radius: 10px;"></div>
+    </div>
+        <div id="ascrail2000-hr" class="nicescroll-rails" style="height: 6px; z-index: 1000; background: rgb(66, 79, 99); position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; display: block; opacity: 0;"><div style="position: relative; top: 0px; height: 6px; width: 451px; background-color: rgb(242, 179, 63); border: 0px; background-clip: padding-box; border-radius: 10px; left: 0px;"></div>
+    </div>
 
 -->
 

@@ -46,7 +46,7 @@ echo 'Salvo com Sucesso';
 
 */
 
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 
 $tabelaparametros = 'parametros_calculos_danos_materiais_morais';
 /*$id=$_POST['id'];*/

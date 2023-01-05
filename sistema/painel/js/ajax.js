@@ -1,13 +1,14 @@
 
 $(document).ready(function(){
+
 	listar();	
 });
 
 function listar(){
-    
+
 	$.ajax({
 		//url:'paginas/'+ pag + '/calculos.php',        
-        url:'paginas/'+ pag2 + '/listar.php',
+        url:'paginas/'+ pag + '/listar.php',
 		method:'POST',
 		data:$('#form').serialize(),
 		dataType:"html",
@@ -21,13 +22,12 @@ function listar(){
 }
 
 
-function excluir(id,tabela){
-
+function excluir(id){
 
        $.ajax({
-        url: 'paginas/' + pag2 + "/excluir.php",
+        url: 'paginas/' + pag + "/excluir.php",
         method: 'POST',
-        data: {id,tabela},
+        data: {id},
         dataType: "text",
 
         success: function (mensagem) {            
@@ -48,11 +48,12 @@ function inserir(){
 $('#mensagem').text('')
 $('#titulo_inserir').text('Inserir Registro');
 $('#modalForm').modal('show');
+
 limparCampos();
 	
 }
 
-/*Salvar modal cadastro de usuário*/
+//Salvar modal cadastro de usuário
 
 
 $("#form").submit(function () {
@@ -85,7 +86,6 @@ $("#form").submit(function () {
 
     });
 });
-
 
 
 //function inserirLinha(){

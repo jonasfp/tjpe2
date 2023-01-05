@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require_once('../../../conexao.php');
+require_once('../../../util/conexao.php');
 $tabela_modulo_custas_processo = 'modulo_custas_processo';
 $processo=$_POST['processo'];
 $varaid=$_POST['vara'];

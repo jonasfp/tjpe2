@@ -2,7 +2,7 @@
 
 @session_start();
 require_once('verificar.php');
-require_once('../conexao.php');
+require_once('../util/conexao.php');
 
 $pag = 'modulo_custas';
 
@@ -12,7 +12,7 @@ $pag = 'modulo_custas';
 <script src='https://momentjs.com/downloads/moment.min.js'></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-<link href="jquery.toast.min.css" rel="stylesheet" type="text/css">
+
 <link rel="stylesheet" href="css/relatorio.css">
 
 
@@ -20,14 +20,8 @@ $pag = 'modulo_custas';
 <div style="display: flex; justify-content: center; margin-bottom:1.0em;"> <img src="../img/tjpe.png"> </div>
 <h3 style="text-align:center">TRIBUNAL DE JUSTIÇA DE PERNAMBUCO</h3>
 
-<div>
-
-
-</div>   
-
-
-<h4 style="text-align:center">CONTADORIA</h4>
-<h5 style="text-align:center; margin-bottom: 3.0em;">FORUM DES. RODOLFO AURELIANO - AV. DES. GUERRA BARRETO, S/N - ILHA DO LEITE - RECIFE /PE</h5>                
+<div><h4 style="text-align:center">CONTADORIA</h4></div>
+<div><h5 style="text-align:center; margin-bottom: 3.0em;">FORUM DES. RODOLFO AURELIANO - AV. DES. GUERRA BARRETO, S/N - ILHA DO LEITE - RECIFE /PE</h5></div>                
 
 <form method="post" id="formCustasProcesso" name="formCustasProcesso">
 
@@ -62,7 +56,7 @@ $pag = 'modulo_custas';
                                     echo '<option value="'.$res[$i]['id'].'">'.$res[$i]['nome'].'</option>';
                             }
                         }else{
-                                           // echo '<option value="0">Cadastre uma Categoria</option>';
+                                          
                         }
                         ?>
 
@@ -180,7 +174,7 @@ $pag = 'modulo_custas';
                     <option value="Sem custas">SEM CUSTAS</option>                               
                     <option value="2º grau">CUSTAS DO 2º GRAU</option>
                     <option value="Contadoria">CONTADORIA</option>
-                    <option value="Diversas">PAGAS</option>          
+                    <option value="Pagas">PAGAS</option>          
                 </select>
 
             </form>
@@ -582,11 +576,18 @@ if($total_reg > 0){
 
 ?>
 
-
-
 <script type="text/javascript">
 
     $(document).ready(function(){
+
+const custasminimas= 176.26
+const taxaminima = 36.68
+const custasmaxima = 36448.26
+//Expedição de certidão, publicação de edital, citações e intimações 
+const despesasextras = 20.00
+//Desarquivamento de autos físicos, SISBAJUD..../Alvarás para busca e bloqueio
+const custasextras = 40.00
+
 
 
 //inclusão de datapickers nos eventos de datas
@@ -858,7 +859,7 @@ $('#dataeventocustastaxa,#datafinalcorrecao,#valorcustastaxa').change(function()
 
     if(moment(startformatado).isBefore('2021-03-05')){
 
-        custasprocessuaiscustastaxa = 176.26+0.008*valorcausacustastaxaatualizado
+        custasprocessuaiscustastaxa = custasminimas+0.008*valorcausacustastaxaatualizado
         taxajudiciariacustastaxa = 0.01 * valorcausacustastaxaatualizado
         
     } else {
@@ -868,23 +869,23 @@ $('#dataeventocustastaxa,#datafinalcorrecao,#valorcustastaxa').change(function()
         
     }
 
-    if(custasprocessuaiscustastaxa > 36448.26 ){
+    if(custasprocessuaiscustastaxa > custasmaxima ){
 
-        custasprocessuaiscustastaxa = 36448.26
+        custasprocessuaiscustastaxa = custasmaxima
 
-    } else if (custasprocessuaiscustastaxa < 176.26){
+    } else if (custasprocessuaiscustastaxa < custasminimas){
 
-        custasprocessuaiscustastaxa = 176.26
+        custasprocessuaiscustastaxa = custasminimas
         
     }
 
-    if(taxajudiciariacustastaxa > 36448.26 ){
+    if(taxajudiciariacustastaxa > custasmaxima ){
 
-        taxajudiciariacustastaxa = 36448.26
+        taxajudiciariacustastaxa = custasmaxima
 
-    } else if (taxajudiciariacustastaxa < 36.68){
+    } else if (taxajudiciariacustastaxa < taxaminima){
 
-    taxajudiciariacustastaxa = 36.68
+    taxajudiciariacustastaxa = taxaminima
         
     }
 
@@ -932,29 +933,29 @@ $('#dataeventoembargos,#datafinalcorrecao,#valorembargos,#selectpercentualembarg
 
     if(moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='0,3'){
 
-        custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
+        custasprocessuaisembargos = custasminimas + 0.008 * valorcausaembargosatualizado
         
 
-    if (custasprocessuaisembargos > 36448.26){
+    if (custasprocessuaisembargos > custasmaxima){
 
-        custasprocessuaisembargos = 36448.26 
+        custasprocessuaisembargos = custasmaxima 
 
-    } else if (custasprocessuaisembargos < 176.26){
+    } else if (custasprocessuaisembargos < custasminimas){
 
-        custasprocessuaisembargos = 176.26
+        custasprocessuaisembargos = custasminimas
 
     }
 
     taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado
 
-    if (taxajudiciariaembargosintegral > 36448.26){
+    if (taxajudiciariaembargosintegral > custasmaxima){
 
-        taxajudiciariaembargosintegral = 36448.26 
+        taxajudiciariaembargosintegral = custasmaxima 
 
 
-    } else if (taxajudiciariaembargosintegral < 36.68){
+    } else if (taxajudiciariaembargosintegral < taxaminima){
 
-        taxajudiciariaembargosintegral = 36.68
+        taxajudiciariaembargosintegral = taxaminima
     }
 
 
@@ -964,29 +965,29 @@ $('#dataeventoembargos,#datafinalcorrecao,#valorembargos,#selectpercentualembarg
 
     } else if (moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='0,7') {
 
-        custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
+        custasprocessuaisembargos = custasminimas + 0.008 * valorcausaembargosatualizado
         
 
-    if (custasprocessuaisembargos > 36448.26){
+    if (custasprocessuaisembargos > custasmaxima){
 
-        custasprocessuaisembargos = 36448.26 
+        custasprocessuaisembargos = custasmaxima 
 
-    } else if (custasprocessuaisembargos < 176.26){
+    } else if (custasprocessuaisembargos < custasminimas){
 
-        custasprocessuaisembargos = 176.26
+        custasprocessuaisembargos = custasminimas
 
     }
 
     taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado
 
-    if (taxajudiciariaembargosintegral > 36448.26){
+    if (taxajudiciariaembargosintegral > custasmaxima){
 
-        taxajudiciariaembargosintegral = 36448.26 
+        taxajudiciariaembargosintegral = custasmaxima 
 
 
-    } else if (taxajudiciariaembargosintegral < 36.68){
+    } else if (taxajudiciariaembargosintegral < taxaminima){
 
-        taxajudiciariaembargosintegral = 36.68
+        taxajudiciariaembargosintegral = taxaminima
     }
 
 
@@ -995,29 +996,29 @@ $('#dataeventoembargos,#datafinalcorrecao,#valorembargos,#selectpercentualembarg
 
     } else if (moment(startformatado).isBefore('2021-03-05') && selectpercentualembargos =='1,0') {
 
-       custasprocessuaisembargos = 176.26 + 0.008 * valorcausaembargosatualizado
+       custasprocessuaisembargos = custasminimas + 0.008 * valorcausaembargosatualizado
         
 
-    if (custasprocessuaisembargos > 36448.26){
+    if (custasprocessuaisembargos > custasmaxima){
 
-        custasprocessuaisembargos = 36448.26 
+        custasprocessuaisembargos = custasmaxima 
 
-    } else if (custasprocessuaisembargos < 176.26){
+    } else if (custasprocessuaisembargos < custasminimas){
 
-        custasprocessuaisembargos = 176.26
+        custasprocessuaisembargos = custasminimas
 
     }
 
     taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado
 
-    if (taxajudiciariaembargosintegral > 36448.26){
+    if (taxajudiciariaembargosintegral > custasmaxima){
 
-        taxajudiciariaembargosintegral = 36448.26 
+        taxajudiciariaembargosintegral = custasmaxima 
 
 
-    } else if (taxajudiciariaembargosintegral < 36.68){
+    } else if (taxajudiciariaembargosintegral < taxaminima){
 
-        taxajudiciariaembargosintegral = 36.68
+        taxajudiciariaembargosintegral = taxaminima
     }
 
 
@@ -1029,25 +1030,25 @@ $('#dataeventoembargos,#datafinalcorrecao,#valorembargos,#selectpercentualembarg
     custasprocessuaisembargosintegral = 0.01 * valorcausaembargosatualizado
     taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado   
 
-    if (custasprocessuaisembargosintegral > 36448.26){
+    if (custasprocessuaisembargosintegral > custasmaxima){
 
-        custasprocessuaisembargosintegral = 36448.26 
+        custasprocessuaisembargosintegral = custasmaxima 
 
-    } else if (custasprocessuaisembargosintegral < 176.26){
+    } else if (custasprocessuaisembargosintegral < custasminimas){
 
-        custasprocessuaisembargosintegral = 176.26
+        custasprocessuaisembargosintegral = custasminimas
 
     }
 
    
-    if (taxajudiciariaembargosintegral > 36448.26){
+    if (taxajudiciariaembargosintegral > custasmaxima){
 
-        taxajudiciariaembargosintegral = 36448.26 
+        taxajudiciariaembargosintegral = custasmaxima 
 
 
-    } else if (taxajudiciariaembargosintegral < 36.68){
+    } else if (taxajudiciariaembargosintegral < taxaminima){
 
-        taxajudiciariaembargosintegral = 36.68
+        taxajudiciariaembargosintegral = taxaminima
     }
 
 
@@ -1061,25 +1062,25 @@ $('#dataeventoembargos,#datafinalcorrecao,#valorembargos,#selectpercentualembarg
     custasprocessuaisembargosintegral = 0.01 * valorcausaembargosatualizado
     taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado   
 
-    if (custasprocessuaisembargosintegral > 36448.26){
+    if (custasprocessuaisembargosintegral > custasmaxima){
 
-        custasprocessuaisembargosintegral = 36448.26 
+        custasprocessuaisembargosintegral = custasmaxima 
 
-    } else if (custasprocessuaisembargosintegral < 176.26){
+    } else if (custasprocessuaisembargosintegral < custasminimas){
 
-        custasprocessuaisembargosintegral = 176.26
+        custasprocessuaisembargosintegral = custasminimas
 
     }
 
    
-    if (taxajudiciariaembargosintegral > 36448.26){
+    if (taxajudiciariaembargosintegral > custasmaxima){
 
-        taxajudiciariaembargosintegral = 36448.26 
+        taxajudiciariaembargosintegral = custasmaxima 
 
 
-    } else if (taxajudiciariaembargosintegral < 36.68){
+    } else if (taxajudiciariaembargosintegral < taxaminima){
 
-        taxajudiciariaembargosintegral = 36.68
+        taxajudiciariaembargosintegral = taxaminima
     }
 
 
@@ -1092,25 +1093,25 @@ $('#dataeventoembargos,#datafinalcorrecao,#valorembargos,#selectpercentualembarg
     custasprocessuaisembargosintegral = 0.01 * valorcausaembargosatualizado
     taxajudiciariaembargosintegral = 0.01 * valorcausaembargosatualizado   
 
-    if (custasprocessuaisembargosintegral > 36448.26){
+    if (custasprocessuaisembargosintegral > custasmaxima){
 
-        custasprocessuaisembargosintegral = 36448.26 
+        custasprocessuaisembargosintegral = custasmaxima 
 
-    } else if (custasprocessuaisembargosintegral < 176.26){
+    } else if (custasprocessuaisembargosintegral < custasminimas){
 
-        custasprocessuaisembargosintegral = 176.26
+        custasprocessuaisembargosintegral = custasminimas
 
     }
 
    
-    if (taxajudiciariaembargosintegral > 36448.26){
+    if (taxajudiciariaembargosintegral > custasmaxima){
 
-        taxajudiciariaembargosintegral = 36448.26 
+        taxajudiciariaembargosintegral = custasmaxima 
 
 
-    } else if (taxajudiciariaembargosintegral < 36.68){
+    } else if (taxajudiciariaembargosintegral < taxaminima){
 
-        taxajudiciariaembargosintegral = 36.68
+        taxajudiciariaembargosintegral = taxaminima
     }
 
 
@@ -1179,33 +1180,33 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
 
     } else if(moment(startformatado).isAfter('2021-03-05') && selectcustasdespesasextras =='Carta precatória'){
 
-        valorunitario = 176.26
+        valorunitario = custasminimas
         $('#valorextras').val(valorunitario.toFixed(2))    
 
     } else if (moment(startformatado).isAfter('2021-03-05') && selectcustasdespesasextras =='Carta de ordem') {
 
-        valorunitario = 176.26
+        valorunitario = custasminimas
         $('#valorextras').val(valorunitario.toFixed(2))   
 
     } else if (moment(startformatado).isAfter('2022-03-11') && selectcustasdespesasextras =='Publicação') {
 
-        valorunitario = 20.00
+        valorunitario = despesasextras
         $('#valorextras').val(valorunitario.toFixed(2))
 
     } else if (moment(startformatado).isAfter('2022-03-11') && selectcustasdespesasextras ==
         'Porte') {
 
-        valorunitario = 20.00
+        valorunitario = despesasextras
         $('#valorextras').val(valorunitario.toFixed(2))
 
     } else if (moment(startformatado).isAfter('2022-03-11') && selectcustasdespesasextras =='Citação/Intimação') {
 
-        valorunitario = 20.00
+        valorunitario = despesasextras
         $('#valorextras').val(valorunitario.toFixed(2))    
 
     } else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='Certidão') {
 
-        valorunitario = 20.00
+        valorunitario = despesasextras
         $('#valorextras').val(valorunitario.toFixed(2))
 
     } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='Certidão') {
@@ -1230,7 +1231,7 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
 
     }else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='Informações') {
 
-        valorunitario = 40.00
+        valorunitario = custasextras
         $('#valorextras').val(valorunitario.toFixed(2))
 
     } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='Informações') {
@@ -1257,7 +1258,7 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
 
     } else if (moment(startformatado).isAfter('2023-03-11') && selectcustasdespesasextras =='Bloqueio') {
 
-        valorunitario = 40.00
+        valorunitario = custasextras
         $('#valorextras').val(valorunitario.toFixed(2))
 
     } else if (moment(startformatado).isBefore('2023-03-11') && selectcustasdespesasextras =='Bloqueio') {
@@ -1327,12 +1328,14 @@ $('#dataeventoextras,#quantidadeextras,#valorextras,#selectcustasdespesasextras'
 <script src = "js/ajax_modulo_custas.js"></script>
 
 
-<div class = "bs-example widget-shadow" style="padding: 15px" id="listar"> </div>
+<div id="listar"> </div>
 
 <script>
 
 
 function excluir(id,tabela){
+
+    event.preventDefault()
 
        $.ajax({
         url: 'paginas/modulo_custas_lista/excluir.php',
@@ -1344,8 +1347,9 @@ function excluir(id,tabela){
             if (mensagem.trim() == "Excluído com Sucesso") {                
                 listar();                
             } else {
-                    $('#mensagem-excluir').addClass('text-danger')
-                    $('#mensagem-excluir').text(mensagem)
+
+                alert("Devem ser excluídos todos os cálculos primeiro!")
+
                 }
 
         },      

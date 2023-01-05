@@ -1,6 +1,6 @@
 <?php 
 
-require_once('../conexao.php');
+require_once('../util/conexao.php');
 require_once('verificar.php');
 
 $id = $_POST['id'];

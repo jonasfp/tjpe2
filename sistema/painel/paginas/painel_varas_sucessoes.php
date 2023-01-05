@@ -2,7 +2,7 @@
 
 @session_start();
 require_once('verificar.php');
-require_once('../conexao.php');
+require_once('../util/conexao.php');
 
  ?>
 
@@ -12,7 +12,7 @@ require_once('../conexao.php');
 
 <div class="col_3">
 
-    <a href="index.php?pag=alvaras">
+    <a href="index.php?pag=calculos_alvaras">
         <div class="col-md-3 widget widget1">
             <div class="r3_counter_box">
                 <i class="pull-left fa fa-users icon-rounded"></i>

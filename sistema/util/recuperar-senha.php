@@ -18,4 +18,4 @@ if ($total_reg > 0) {
 	echo "Esse email não está cadastrado!";
 }
 
- ?>
+?>
